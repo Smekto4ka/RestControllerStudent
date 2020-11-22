@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentComponent } from './student/student.component';
 import {FormsModule} from '@angular/forms';
+import { PostStudentComponent } from './post-student/post-student.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentComponent
+    StudentComponent,
+    PostStudentComponent
   ],
   imports: [
     BrowserModule,

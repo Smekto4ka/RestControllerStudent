@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StudentService} from '../service/student.service';
+import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 
 @Component({
@@ -21,15 +21,12 @@ export class StudentComponent implements OnInit {
   isVisibleInfoStudent(id: number) {
     const indx = this.getIndex(id);
     this.studentObj[indx].visibleInfo = !this.studentObj[indx].visibleInfo;
-    //console.log(this.studentObj[indx]);
-   // console.log(this.studentObj[indx].student.subjectBinderAll);
-    //console.log(this.studentObj[indx].student.subjectBinderMap.values()[Symbol.iterator]);
   }
 
   isVisibleUpdateStudent(id: number) {
     const indx = this.getIndex(id);
     this.studentObj[indx].visibleUpdate = !this.studentObj[indx].visibleUpdate;
-    // console.log(this.studentObj[indx].student);
+
   }
 
   updateStudent(id: number) {
