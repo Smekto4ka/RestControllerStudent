@@ -20,6 +20,6 @@ export class PostStudentComponent implements OnInit {
   }
 
   postStudent() {
-    this.studentService.postStudent(new Student(0, this.firstName, this.lastName, this.years, []));
+    this.studentService.postStudent( this.firstName, this.lastName, this.years);
   }
 }

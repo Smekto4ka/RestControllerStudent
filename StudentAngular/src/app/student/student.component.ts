@@ -14,8 +14,10 @@ export class StudentComponent implements OnInit {
   constructor(private studentService: StudentService) {
   }
 
+
   ngOnInit(): void {
-    this.studentService.getStudent().subscribe(student => this.studentObj = student.map(stud => new StudentObj(stud)));
+    this.studentService.getStudent().subscribe(student => this.studentObj = student
+      .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new StudentObj(stud)));
   }
 
   isVisibleInfoStudent(id: number) {

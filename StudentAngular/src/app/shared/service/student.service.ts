@@ -19,8 +19,13 @@ export class StudentService {
     return this.http.put(this.url, student).subscribe();
   }
 
-  postStudent(student: Student): Observable<any> {
-    return this.http.post(this.url, student).subscribe();
+  postStudent(firstNameStudent: string, lastNameStudent: string, yearsStudent: number): Observable<any> {
+    const body = {
+      firstName: firstNameStudent,
+      lastName: lastNameStudent,
+      years: yearsStudent
+    };
+    return this.http.post(this.url, body).subscribe();
   }
 
 }
