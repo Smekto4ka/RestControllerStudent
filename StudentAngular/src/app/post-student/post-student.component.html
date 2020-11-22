@@ -1,1 +1,8 @@
-<p>post-student works!</p>
+<input type="text" placeholder="lastName"
+       class="form-control" [(ngModel)]="lastName" name="lastName">
+<input type="text" placeholder="firstName"
+       class="form-control" [(ngModel)]="firstName" name="firstName">
+<input type="number" placeholder="years"
+       class="form-control" [(ngModel)]="years" name="years">
+
+<button class="btn btn-warning" (click)="postStudent()">post Student</button>
