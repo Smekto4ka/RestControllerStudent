@@ -3,10 +3,12 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Student} from '../../model/Student';
 import {catchError} from 'rxjs/operators';
+import {StudentObj} from '../../student/student.component';
 
 @Injectable({providedIn: 'root'})
 export class StudentService {
   private url = 'http://localhost:8180/restStudent';
+
 
   constructor(private http: HttpClient) {
   }
