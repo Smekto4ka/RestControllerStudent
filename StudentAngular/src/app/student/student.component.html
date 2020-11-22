@@ -1,0 +1,30 @@
+<ul>
+  <li *ngFor="let student of studentObj">
+    <span>
+      <strong>{{student.student.studentId}}</strong>
+      {{student.student.lastName}}
+      {{student.student.firstName}}
+      {{student.student.years}}
+    </span>
+    <button class="btn btn-warning"
+            (click)="isVisibleInfoStudent(student.student.studentId)">{{student.visibleInfo ? 'close' : 'open'}}</button>
+    <div *ngIf="student.visibleInfo">
+    <div *ngFor="let subjectB of student.student.subjectBinderAll">
+      {{subjectB.average}}
+    </div>
+      <button class="btn btn-warning"
+              (click)="isVisibleUpdateStudent(student.student.studentId)">{{student.visibleInfo ? 'closeUpdate' : 'openUpdate'}}</button>
+      <div *ngIf="student.visibleUpdate" class="form-group">
+
+        <input type="text" placeholder="lastName"
+               class="form-control" [(ngModel)]="student.student.lastName" name="lastName">
+        <input type="text" placeholder="firstName"
+               class="form-control" [(ngModel)]="student.student.firstName" name="firstName">
+        <input type="number" placeholder="years"
+               class="form-control" [(ngModel)]="student.student.years" name="years">
+
+        <button class="btn btn-warning" (click)="updateStudent(student.student.studentId)">Update</button>
+      </div>
+    </div>
+  </li>
+</ul>

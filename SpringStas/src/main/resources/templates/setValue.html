@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>set value:</p>
+
+
+<form th:method="POST" th:action="@{/student/setMarks/{id}(id = ${student.getStudentId()})}" th:object="${listRating}">
+    <table border="1px">
+        <tr border="1px">
+            <td>Id students</td>
+            <td th:text="${student.getStudentId()}"></td>
+        </tr>
+        <tr border="1px">
+            <td>First name</td>
+            <td th:text="${student.getFirstName()}"></td>
+        </tr>
+        <tr border="1px">
+            <td>Last Name</td>
+            <td th:text="${student.getLastName()}"></td>
+        </tr>
+        <tr border="1px">
+            <td>Years</td>
+            <td th:text="${student.getYears()}"></td>
+        </tr>
+    </table>
+
+    <br>
+    <table border="1px">
+        <tr>
+            <th>Possible Subject</th>
+            <div th:each="subject : ${arraysSubject}">
+                <td th:text="${subject}"></td>
+            </div>
+        </tr>
+    </table>
+
+    <br>
+    <table>
+        <tr>
+            <td>Subject</td>
+            <td>
+                <input th:field="*{nameSubject}" type="text"/>
+            </td>
+            <td th:if="${#fields.hasErrors('nameSubject')}" th:errors="*{nameSubject}">Name Error</td>
+        </tr>
+        <div th:each="number : ${numberingOfMarks}">
+            <tr>
+                <td th:text="${number}"></td>
+                <td><input min="1" max="5" th:field="*{marks}" type="number"/></td>
+            </tr>
+        </div>
+    </table>
+    <br>
+    <input type="submit" value="set Value"/>
+</form>
+
+
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="sasaBd" uuid="5d63f1ff-8eac-437a-b1b1-b782b161f359">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/sasa</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="houmBDdtudent" uuid="d32f4a27-9505-485c-a5a5-1c3a4661b473">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/myDb</jdbc-url>
+    </data-source>
+  </component>
+</project>

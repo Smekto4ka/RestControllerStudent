@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>Hello!</p>
+<a href="/student">list id student</a>
+<table border="1px">
+    <tr border="1px">
+        <td>Id students</td>
+        <td th:text="${student.getStudentId()}"></td>
+    </tr>
+    <tr border="1px">
+        <td>First name</td>
+        <td th:text="${student.getFirstName()}"></td>
+    </tr>
+    <tr border="1px">
+        <td>Last Name</td>
+        <td th:text="${student.getLastName()}"></td>
+    </tr>
+    <tr border="1px">
+        <td>Years</td>
+        <td th:text="${student.getYears()}"></td>
+    </tr>
+</table>
+<br>
+
+<table border="1px">
+
+    <div th:each="subjectBiner : ${student.getSubjectBinderAll()}">
+        <tr >
+            <td  th:text="${subjectBiner.getNameSubject()}"></td>
+            <div th:each="marks : ${subjectBiner.getValueMarks()}">
+                <td th:text="${marks}"></td>
+            </div>
+        </tr>
+    </div>
+</table>
+
+<br>
+
+
+<form th:action="@{/student/setMarks/{id} (id = ${student.getStudentId()} )}" th:method="GET">
+    <input type="submit" value="set Value"/>
+    <label for="numberMarks">koll value </label>
+    <input type="number" min="1" id="numberMarks" name="numberMarks" value="1">
+    <p th:text="${warning}"></p>
+
+</form>
+<p>
+
+<form th:action="@{/student/delete/{idStudent}(idStudent = ${student.getStudentId()} )}" th:method="delete">
+    <button>Delet</button>
+</form>
+
+<form th:action="@{/student/update/{idStudent}(idStudent = ${student.getStudentId()})}" th:method="GET">
+    <button>Update</button>
+</form>
+
+</body>
+
+</html>
