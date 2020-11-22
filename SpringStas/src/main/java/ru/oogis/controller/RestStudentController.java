@@ -44,4 +44,10 @@ public class RestStudentController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<?> deleteStudent(@PathVariable long studentId) {
+        studentService.deleteStudentById(studentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

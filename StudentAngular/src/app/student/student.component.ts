@@ -20,6 +20,12 @@ export class StudentComponent implements OnInit {
       .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new StudentObj(stud)));
   }
 
+  deleteStudent(id: number) {
+    this.studentService.deleteStudent(id);
+    const indx = this.getIndex(id);
+    this.studentObj.splice(indx, 1);
+  }
+
   isVisibleInfoStudent(id: number) {
     const indx = this.getIndex(id);
     this.studentObj[indx].visibleInfo = !this.studentObj[indx].visibleInfo;

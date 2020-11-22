@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Student} from '../../model/Student';
 import {catchError} from 'rxjs/operators';
@@ -30,4 +30,8 @@ export class StudentService {
     return this.http.post(this.url, body).subscribe();
   }
 
+  deleteStudent(studentId: number) {
+    this.http.delete(this.url + `/${studentId}`).subscribe();
+
+  }
 }

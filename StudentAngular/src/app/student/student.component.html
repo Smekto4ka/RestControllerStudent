@@ -19,6 +19,7 @@
       </div>
       <button class="btn btn-warning"
               (click)="isVisibleUpdateStudent(student.student.studentId)">{{student.visibleUpdate ? 'closeUpdate' : 'openUpdate'}}</button>
+      <button class="btn btn-warning" (click)="deleteStudent(student.student.studentId)" >delete</button>
       <div *ngIf="student.visibleUpdate" class="form-group">
 
         <input type="text" placeholder="lastName"
