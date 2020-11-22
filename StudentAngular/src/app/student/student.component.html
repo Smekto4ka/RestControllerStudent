@@ -8,12 +8,17 @@
     </span>
     <button class="btn btn-warning"
             (click)="isVisibleInfoStudent(student.student.studentId)">{{student.visibleInfo ? 'close' : 'open'}}</button>
-    <div *ngIf="student.visibleInfo">
-    <div *ngFor="let subjectB of student.student.subjectBinderAll">
-      {{subjectB.average}}
-    </div>
+    <div *ngIf="student.visibleInfo" class="container">
+      <div *ngFor="let subjectB of student.student.subjectBinderAll">
+       <span>
+      <strong>{{subjectB.subject.subjectName}}</strong>
+        <a *ngFor="let marks of subjectB.marksList">
+          {{marks.marks}}
+        </a>
+    </span>
+      </div>
       <button class="btn btn-warning"
-              (click)="isVisibleUpdateStudent(student.student.studentId)">{{student.visibleInfo ? 'closeUpdate' : 'openUpdate'}}</button>
+              (click)="isVisibleUpdateStudent(student.student.studentId)">{{student.visibleUpdate ? 'closeUpdate' : 'openUpdate'}}</button>
       <div *ngIf="student.visibleUpdate" class="form-group">
 
         <input type="text" placeholder="lastName"
