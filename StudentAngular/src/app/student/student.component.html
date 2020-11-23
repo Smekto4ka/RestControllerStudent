@@ -1,15 +1,15 @@
 <ul class="container" style="text-align: center">
-  <li *ngFor="let student of studentObj">
+  <li *ngFor="let form of studentObj">
     <span>
-      <strong>{{student.student.studentId}}</strong>
-      {{student.student.lastName}}
-      {{student.student.firstName}}
-      {{student.student.years}}
+      <strong>{{form.student.studentId}}</strong>
+      {{form.student.lastName}}
+      {{form.student.firstName}}
+      {{form.student.years}}
     </span>
     <button class="btn btn-warning"
-            (click)="isVisibleInfoStudent(student.student.studentId)">{{student.visibleInfo ? 'close' : 'open'}}</button>
-    <div *ngIf="student.visibleInfo" class="container">
-      <div *ngFor="let subjectB of student.student.subjectBinderAll">
+            (click)="form.isVisibleInfoStudent()">{{form.visibleInfo ? 'close' : 'open'}}</button>
+    <div *ngIf="form.visibleInfo" class="container">
+      <div *ngFor="let subjectB of form.student.subjectBinderAll">
        <span>
       <strong>{{subjectB.subject.subjectName}}</strong>
         <a *ngFor="let marks of subjectB.marksList">
@@ -18,18 +18,29 @@
     </span>
       </div>
       <button class="btn btn-warning"
-              (click)="isVisibleUpdateStudent(student.student.studentId)">{{student.visibleUpdate ? 'closeUpdate' : 'openUpdate'}}</button>
-      <button class="btn btn-warning" (click)="deleteStudent(student.student.studentId)" >delete</button>
-      <div *ngIf="student.visibleUpdate" class="form-group">
+              (click)="form.isVisibleUpdateStudent()">{{form.visibleUpdate ? 'closeUpdate' : 'openUpdate'}}</button>
+      <button class="btn btn-warning" (click)="deleteStudent(form.student.studentId)">delete</button>
+      <button class="btn btn-warning" (click)="form.isVisibleWindowsMarks()">add marks</button>
+      <div *ngIf="form.visibleUpdate" class="form-group">
 
         <input type="text" placeholder="lastName"
-               class="form-control" [(ngModel)]="student.student.lastName" name="lastName">
+               class="form-control" [(ngModel)]="form.putStudent.myForm" name="lastName">
         <input type="text" placeholder="firstName"
-               class="form-control" [(ngModel)]="student.student.firstName" name="firstName">
+               class="form-control" [(ngModel)]="form.putStudent.lastName" name="firstName">
         <input type="number" placeholder="years"
-               class="form-control" [(ngModel)]="student.student.years" name="years">
+               class="form-control" [(ngModel)]="form.putStudent.years" name="years">
 
-        <button class="btn btn-warning" (click)="updateStudent(student.student.studentId)">Update</button>
+        <button class="btn btn-warning" (click)="updateStudent(form.student.studentId)">Update</button>
+      </div>
+      <div *ngIf="form.visibleWindowsMarks">
+        <input type="number" placeholder="numberMarks" min="0" #box
+               class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
+        <div *ngFor="let ind = index of form.arraysMarks">
+          <a>{{form.arraysMarks[ind]}}</a>
+          <input type="number" placeholder="marks № {{ind}}" min="0" max = "5"
+                 class="form-control" [(ngModel)]="form.arraysMarks[ind]" >
+        </div>
+        <button class="btn btn-warning" (click)="saveMarks(form.student.studentId)">save marks</button>
       </div>
     </div>
   </li>

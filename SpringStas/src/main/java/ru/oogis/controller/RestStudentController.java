@@ -11,6 +11,7 @@ import ru.oogis.service.StudentService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restStudent")
@@ -29,10 +30,18 @@ public class RestStudentController {
         return studentService.getStudents();
     }
 
+    @GetMapping("/{studentId}")
+    public Student getStudentById(@PathVariable long studentId) {
+        return studentService.getStudById(studentId).get();
+    }
+
     @PutMapping()
-    public ResponseEntity<?> updateStudent(@RequestBody Student student) {
-        return studentService.updateStudent(student) ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<Student> updateStudent(@Valid @RequestBody Student student, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+        return studentService.updateStudent(student) ? new ResponseEntity<>(student, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -47,7 +56,7 @@ public class RestStudentController {
 
     @DeleteMapping("/{studentId}")
     public ResponseEntity<?> deleteStudent(@PathVariable long studentId) {
-        studentService.deleteStudentById(studentId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return studentService.deleteStudentById(studentId) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }

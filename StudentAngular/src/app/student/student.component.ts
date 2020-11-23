@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
+import {HttpEvent, HttpEventType} from '@angular/common/http';
+import {PutStudent} from '../model/PutStudent';
 
 @Component({
   selector: 'app-student',
@@ -10,6 +12,7 @@ import {Student} from '../model/Student';
 export class StudentComponent implements OnInit {
 
   public studentObj: StudentObj[] = [];
+
 
   constructor(private studentService: StudentService) {
   }
@@ -21,25 +24,31 @@ export class StudentComponent implements OnInit {
   }
 
   deleteStudent(id: number) {
-    this.studentService.deleteStudent(id);
-    const indx = this.getIndex(id);
-    this.studentObj.splice(indx, 1);
+
+    this.studentService.deleteStudent(id).subscribe(resp => {
+      if (resp.ok) {
+        const indx = this.getIndex(id);
+        this.studentObj.splice(indx, 1);
+      }
+    });
   }
 
-  isVisibleInfoStudent(id: number) {
-    const indx = this.getIndex(id);
-    this.studentObj[indx].visibleInfo = !this.studentObj[indx].visibleInfo;
-  }
-
-  isVisibleUpdateStudent(id: number) {
-    const indx = this.getIndex(id);
-    this.studentObj[indx].visibleUpdate = !this.studentObj[indx].visibleUpdate;
-
+  saveMarks(id: number) {
+    console.log(this.studentObj[this.getIndex(id)].arraysMarks);
   }
 
   updateStudent(id: number) {
     const indx = this.getIndex(id);
-    this.studentService.updateStudent(this.studentObj[indx].student);
+    const studObj = this.studentObj[indx];
+    this.studentService.updateStudent( studObj.putStudent)
+      .subscribe((event: HttpEvent<any>) => {
+        studObj.update();
+        if (event.type === HttpEventType.Response && event.ok) {
+          if (event.body != null) {
+            this.studentObj[indx].student = event.body;
+          }
+        }
+      });
   }
 
   getIndex(id: number): number {
@@ -48,11 +57,41 @@ export class StudentComponent implements OnInit {
 
 }
 
+
 export class StudentObj {
   public visibleInfo = false;
   public visibleUpdate = false;
+  public putStudent: PutStudent;
+  public visibleWindowsMarks = false;
+  public arraysMarks = new Array(1);
+
 
   constructor(public student: Student) {
+    this.putStudent = new PutStudent(student.studentId , '', '', 0);
   }
 
+  update() {
+    this.putStudent.lastName = '';
+    this.putStudent.firstName = '';
+    this.putStudent.years = 0;
+  }
+
+  public isVisibleInfoStudent() {
+    this.visibleInfo = !this.visibleInfo;
+  }
+
+  public isVisibleUpdateStudent() {
+
+    this.visibleUpdate = !this.visibleUpdate;
+
+  }
+
+  public isVisibleWindowsMarks() {
+    this.visibleWindowsMarks = !this.visibleWindowsMarks;
+  }
+
+  public updateArraysMarks(event: string) {
+    console.log(event);
+    this.arraysMarks = new Array(Number.parseInt(event));
+  }
 }

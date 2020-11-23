@@ -1,8 +1,8 @@
 <input type="text" placeholder="lastName" minlength="2" maxlength="20"
-       class="form-control" [(ngModel)]="lastName" name="lastName">
+       class="form-control" [(ngModel)]="student.lastName" name="lastName">
 <input type="text" placeholder="firstName" minlength="2" maxlength="20"
-       class="form-control" [(ngModel)]="firstName" name="firstName">
+       class="form-control" [(ngModel)]="student.firstName" name="firstName">
 <input type="number" placeholder="years" min="0" max="150"
-       class="form-control" [(ngModel)]="years" name="years">
+       class="form-control" [(ngModel)]="student.years" name="years">
 
 <button class="btn btn-warning" (click)="postStudent()" routerLink="/listStudent">post Student</button>

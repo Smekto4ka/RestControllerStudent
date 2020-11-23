@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpEvent, HttpEventType, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Student} from '../../model/Student';
 import {catchError} from 'rxjs/operators';
 import {StudentObj} from '../../student/student.component';
+import {PutStudent} from '../../model/PutStudent';
 
 @Injectable({providedIn: 'root'})
 export class StudentService {
@@ -17,21 +18,17 @@ export class StudentService {
     return this.http.get<Student[]>(this.url);
   }
 
-  updateStudent(student: Student): Observable<any> {
-    return this.http.put(this.url, student).subscribe();
+  updateStudent(student: PutStudent) {
+    return this.http.put(this.url, student, {observe: 'events'});
   }
 
-  postStudent(firstNameStudent: string, lastNameStudent: string, yearsStudent: number): Observable<any> {
-    const body = {
-      firstName: firstNameStudent,
-      lastName: lastNameStudent,
-      years: yearsStudent
-    };
-    return this.http.post(this.url, body).subscribe();
+  postStudent(student: PutStudent) {
+
+    return this.http.post(this.url, student).subscribe();
   }
 
   deleteStudent(studentId: number) {
-    this.http.delete(this.url + `/${studentId}`).subscribe();
+    return this.http.delete(this.url + `/${studentId}`, {observe: 'response'});
 
   }
 }

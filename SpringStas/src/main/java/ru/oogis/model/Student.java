@@ -4,10 +4,11 @@ package ru.oogis.model;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import java.util.*;
-import java.util.stream.Collector;
+
 import java.util.stream.Collectors;
 
 /**
@@ -22,11 +23,11 @@ public class Student {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long studentId;
-
+    @NotNull
     @Column(name = "firstName")
     @Size(min = 2, max = 20)
     private String firstName;
-
+    @NotNull
     @Column(name = "lastName")
     @Size(min = 2, max = 20)
     private String lastName;
