@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {PutStudent} from '../model/PutStudent';
+import {ValidStudent} from '../model/ValidStudent';
+
 
 @Component({
   selector: 'app-student',
@@ -61,19 +62,17 @@ export class StudentComponent implements OnInit {
 export class StudentObj {
   public visibleInfo = false;
   public visibleUpdate = false;
-  public putStudent: PutStudent;
+  public putStudent: ValidStudent;
   public visibleWindowsMarks = false;
   public arraysMarks = new Array(1);
 
 
   constructor(public student: Student) {
-    this.putStudent = new PutStudent(student.studentId , '', '', 0);
+    this.putStudent = new ValidStudent(student.studentId , '', '', 0);
   }
 
   update() {
-    this.putStudent.lastName = '';
-    this.putStudent.firstName = '';
-    this.putStudent.years = 0;
+
   }
 
   public isVisibleInfoStudent() {

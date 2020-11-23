@@ -1,8 +1,23 @@
-<input type="text" placeholder="lastName" minlength="2" maxlength="20"
-       class="form-control" [(ngModel)]="student.lastName" name="lastName">
-<input type="text" placeholder="firstName" minlength="2" maxlength="20"
-       class="form-control" [(ngModel)]="student.firstName" name="firstName">
-<input type="number" placeholder="years" min="0" max="150"
-       class="form-control" [(ngModel)]="student.years" name="years">
+<form [formGroup]="student.myForm">
+  <input type="text" placeholder="lastName"
+         class="form-control" formControlName="lastName" name="lastName">
 
-<button class="btn btn-warning" (click)="postStudent()" routerLink="/listStudent">post Student</button>
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['lastName'].invalid && student.myForm.controls['lastName'].touched">
+   неправильно
+  </div>
+  <input type="text" placeholder="firstName"
+         class="form-control" formControlName="firstName" name="firstName">
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['firstName'].invalid && student.myForm.controls['firstName'].touched">
+    Не указано имя
+  </div>
+  <input type="number" placeholder="years"
+         class="form-control" formControlName="years" name="years">
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['years'].invalid && student.myForm.controls['years'].touched">
+   неправильное значение
+  </div>
+
+  <button class="btn btn-warning" [disabled]="student.myForm.invalid"  (click)="postStudent()" routerLink="/listStudent">post Student</button>
+</form>

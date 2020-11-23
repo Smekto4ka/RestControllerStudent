@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
-import {PutStudent} from '../model/PutStudent';
+import {ValidStudent} from '../model/ValidStudent';
 
 @Component({
   selector: 'app-post-student',
@@ -11,10 +11,10 @@ import {PutStudent} from '../model/PutStudent';
 export class PostStudentComponent implements OnInit {
 
 
-  public student: PutStudent;
+  public student: ValidStudent;
 
   constructor(private studentService: StudentService) {
-    this.student = new PutStudent(0, '', '', 0);
+    this.student = new ValidStudent(0, '', '', 0);
   }
 
 
@@ -22,6 +22,7 @@ export class PostStudentComponent implements OnInit {
   }
 
   postStudent() {
+    console.log(this.student);
     this.studentService.postStudent(this.student);
   }
 }
