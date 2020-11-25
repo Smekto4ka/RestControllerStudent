@@ -3,6 +3,7 @@ import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {ValidStudent} from '../model/ValidStudent';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -35,15 +36,15 @@ export class StudentComponent implements OnInit {
   }
 
   saveMarks(id: number) {
-    console.log(this.studentObj[this.getIndex(id)].arraysMarks);
+    console.log(this.studentObj[this.getIndex(id)].marksForm);
   }
 
   updateStudent(id: number) {
     const indx = this.getIndex(id);
     const studObj = this.studentObj[indx];
-    this.studentService.updateStudent( studObj.putStudent)
+    this.studentService.updateStudent(studObj.putStudent)
       .subscribe((event: HttpEvent<any>) => {
-        studObj.update();
+
         if (event.type === HttpEventType.Response && event.ok) {
           if (event.body != null) {
             this.studentObj[indx].student = event.body;
@@ -64,16 +65,18 @@ export class StudentObj {
   public visibleUpdate = false;
   public putStudent: ValidStudent;
   public visibleWindowsMarks = false;
-  public arraysMarks = new Array(1);
-
+  public length = 1;
+  public marksForm: FormGroup;
 
   constructor(public student: Student) {
-    this.putStudent = new ValidStudent(student.studentId , '', '', 0);
+    this.putStudent = new ValidStudent(student.studentId, '', '', 0);
+    this.marksForm = new FormGroup({
+      marks: new FormArray([
+        new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)])
+      ])
+    });
   }
 
-  update() {
-
-  }
 
   public isVisibleInfoStudent() {
     this.visibleInfo = !this.visibleInfo;
@@ -89,8 +92,20 @@ export class StudentObj {
     this.visibleWindowsMarks = !this.visibleWindowsMarks;
   }
 
-  public updateArraysMarks(event: string) {
-    console.log(event);
-    this.arraysMarks = new Array(Number.parseInt(event));
-  }
+  /*
+    public updateArraysMarks(event: string) {
+      console.log(event);
+      const value = Number.parseInt(event);
+      this.length = (<FormArray> this.marksForm.controls['marks']).length;
+      if (this.length - value > 0) {
+        for (const i = this.length; i > value; i - 1) {
+          (<FormArray> this.marksForm.controls['marks']).removeAt(i);
+        }
+      } else {
+        for (const i = 0; i < value - this.length; i + 1) {
+          (<FormArray> this.marksForm.controls['marks'])
+            .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
+        }
+      }
+    }*/
 }

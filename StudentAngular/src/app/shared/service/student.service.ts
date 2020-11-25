@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpEventType, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Student} from '../../model/Student';
-import {catchError} from 'rxjs/operators';
-import {StudentObj} from '../../student/student.component';
 import {ValidStudent} from '../../model/ValidStudent';
 
 

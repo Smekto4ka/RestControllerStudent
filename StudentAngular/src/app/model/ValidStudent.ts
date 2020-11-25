@@ -13,7 +13,7 @@ export class ValidStudent {
     this.myForm = new FormGroup({
       firstName: new FormControl(firstName, [ Validators.minLength(3) , Validators.required]),
       lastName: new FormControl(lastName, [ Validators.minLength(3) , Validators.required]),
-      years: new FormControl(years,[ Validators.min(0) , Validators.required])
+      years: new FormControl(years, [ Validators.min(0) , Validators.required])
     });
   }
 }
