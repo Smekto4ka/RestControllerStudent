@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.oogis.model.Student;
+import ru.oogis.model.SubjectEnum;
 import ru.oogis.service.StudentService;
 
 import javax.validation.Valid;
@@ -58,5 +59,10 @@ public class RestStudentController {
     public ResponseEntity<?> deleteStudent(@PathVariable long studentId) {
         return studentService.deleteStudentById(studentId) ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    }
+
+    @GetMapping("/subject")
+    public SubjectEnum[] getNameSubject() {
+        return SubjectEnum.values();
     }
 }

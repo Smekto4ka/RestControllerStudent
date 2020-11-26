@@ -4,7 +4,7 @@ import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {ValidStudent} from '../model/ValidStudent';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-
+import {NgModel} from '@angular/forms';
 
 @Component({
   selector: 'app-student',
@@ -14,8 +14,8 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 export class StudentComponent implements OnInit {
 
   public studentObj: StudentObj[] = [];
-
-
+  public nameSubject: string[];
+public listItems: Array<string> = ['Baseball', 'Basketball', 'Cricket', 'Field Hockey', 'Football', 'Table Tennis', 'Tennis', 'Volleyball'];
   constructor(private studentService: StudentService) {
   }
 
@@ -23,6 +23,7 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
     this.studentService.getStudent().subscribe(student => this.studentObj = student
       .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new StudentObj(stud)));
+    this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
   }
 
   deleteStudent(id: number) {
@@ -36,7 +37,8 @@ export class StudentComponent implements OnInit {
   }
 
   saveMarks(id: number) {
-    console.log(this.studentObj[this.getIndex(id)].marksForm);
+    console.log(this.studentObj[this.getIndex(id)].marksForm.value['marks']);
+
   }
 
   updateStudent(id: number) {
@@ -92,20 +94,19 @@ export class StudentObj {
     this.visibleWindowsMarks = !this.visibleWindowsMarks;
   }
 
-  /*
-    public updateArraysMarks(event: string) {
-      console.log(event);
-      const value = Number.parseInt(event);
-      this.length = (<FormArray> this.marksForm.controls['marks']).length;
-      if (this.length - value > 0) {
-        for (const i = this.length; i > value; i - 1) {
-          (<FormArray> this.marksForm.controls['marks']).removeAt(i);
-        }
-      } else {
-        for (const i = 0; i < value - this.length; i + 1) {
-          (<FormArray> this.marksForm.controls['marks'])
-            .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
-        }
+
+  public updateArraysMarks(event: string) {
+    const value = Number.parseInt(event);
+    this.length = (<FormArray> this.marksForm.controls['marks']).length;
+    if (this.length - value > 0) {
+      for (let i = this.length; i >= value; i = i - 1) {
+        (<FormArray> this.marksForm.controls['marks']).removeAt(i);
       }
-    }*/
+    } else {
+      for (let i = 0; i < value - this.length; i = i + 1) {
+        (<FormArray> this.marksForm.controls['marks'])
+          .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
+      }
+    }
+  }
 }

@@ -56,14 +56,21 @@
 
 
       <form *ngIf="form.visibleWindowsMarks" [formGroup]="form.marksForm" class="form-group">
+
         <input type="number" placeholder="numberMarks" min="0" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
-        <div *ngFor="let ind = index of form.marksForm.controls['marks']['controls']" formArrayName="marks">
+        <div *ngFor="let marks of form.marksForm.controls['marks']['controls'] , let ind = index" formArrayName="marks">
 
           <input type="number" placeholder="marks № {{ind}}" min="0" max="5"
                  class="form-control" formControlName="{{ind}}">
+          <div class="alert alert-danger"
+               *ngIf="marks.invalid">
+            неправильное значение
+          </div>
         </div>
-        <button class="btn btn-warning" (click)="saveMarks(form.student.studentId)">save marks</button>
+        <button class="btn btn-warning" [disabled]="form.marksForm.invalid"
+                (click)="saveMarks(form.student.studentId)">save marks
+        </button>
       </form>
 
 
