@@ -56,12 +56,6 @@
 
 
       <form *ngIf="form.visibleWindowsMarks" [formGroup]="form.marksForm" class="form-group">
-        <form-field appearance="fill">
-          <label>Subject </label>
-          <select #name>
-            <option *ngFor="let nameSb of nameSubject" value="{{nameSb}}">{{nameSb}}</option>
-          </select>
-        </form-field>
 
         <input type="number" placeholder="numberMarks" min="0" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
@@ -75,7 +69,7 @@
           </div>
         </div>
         <button class="btn btn-warning" [disabled]="form.marksForm.invalid"
-                (click)="saveMarks(form.student.studentId , name.value)">save marks
+                (click)="saveMarks(form.student.studentId)">save marks
         </button>
       </form>
 

@@ -1,16 +1,18 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { HttpClientModule} from '@angular/common/http';
-import {RouterModule , Routes} from '@angular/router';
-import { AppComponent } from './app.component';
-import { StudentComponent } from './student/student.component';
+import {HttpClientModule} from '@angular/common/http';
+import {RouterModule, Routes} from '@angular/router';
+import {AppComponent} from './app.component';
+import {StudentComponent} from './student/student.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { PostStudentComponent } from './post-student/post-student.component';
+import {PostStudentComponent} from './post-student/post-student.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSelectModule} from '@angular/material/select';
 
 const appRoutes: Routes = [
-  {path : 'listStudent' , component: StudentComponent},
-  {path: 'newStudent' , component: PostStudentComponent}
+  {path: 'listStudent', component: StudentComponent},
+  {path: 'newStudent', component: PostStudentComponent}
 ];
 
 @NgModule({
@@ -24,9 +26,13 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

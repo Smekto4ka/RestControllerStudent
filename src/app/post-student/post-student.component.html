@@ -1,0 +1,23 @@
+<form [formGroup]="student.myForm">
+  <input type="text" placeholder="lastName"
+         class="form-control" formControlName="lastName" name="lastName">
+
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['lastName'].invalid && student.myForm.controls['lastName'].touched">
+   неправильно
+  </div>
+  <input type="text" placeholder="firstName"
+         class="form-control" formControlName="firstName" name="firstName">
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['firstName'].invalid && student.myForm.controls['firstName'].touched">
+    Не указано имя
+  </div>
+  <input type="number" placeholder="years"
+         class="form-control" formControlName="years" name="years">
+  <div class="alert alert-danger"
+       *ngIf="student.myForm.controls['years'].invalid && student.myForm.controls['years'].touched">
+   неправильное значение
+  </div>
+
+  <button class="btn btn-warning" [disabled]="student.myForm.invalid"  (click)="postStudent()" routerLink="/listStudent">post Student</button>
+</form>

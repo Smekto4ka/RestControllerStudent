@@ -4,8 +4,7 @@ import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {ValidStudent} from '../model/ValidStudent';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
-import {FormListMarks} from '../model/FormListMarks';
+import {NgModel} from '@angular/forms';
 
 @Component({
   selector: 'app-student',
@@ -15,8 +14,8 @@ import {FormListMarks} from '../model/FormListMarks';
 export class StudentComponent implements OnInit {
 
   public studentObj: StudentObj[] = [];
-  public nameSubject: string[] = [];
-
+  public nameSubject: string[];
+public listItems: Array<string> = ['Baseball', 'Basketball', 'Cricket', 'Field Hockey', 'Football', 'Table Tennis', 'Tennis', 'Volleyball'];
   constructor(private studentService: StudentService) {
   }
 
@@ -37,21 +36,9 @@ export class StudentComponent implements OnInit {
     });
   }
 
-  saveMarks(id: number, name: string) {
-
-    this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksForm.value['marks']))
-      .subscribe((event: HttpEvent<Student>) => {
-        if (event.type === HttpEventType.Response && event.ok) {
-          if (event.body != null) {
-
-            this.studentObj[this.getIndex(event.body.studentId)].student = event.body;
-
-          }
-        }
-      });
-
+  saveMarks(id: number) {
     console.log(this.studentObj[this.getIndex(id)].marksForm.value['marks']);
-    console.log(name);
+
   }
 
   updateStudent(id: number) {

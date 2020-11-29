@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Student} from '../../model/Student';
 import {ValidStudent} from '../../model/ValidStudent';
-import {FormListMarks} from '../../model/FormListMarks';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,11 +11,6 @@ export class StudentService {
 
 
   constructor(private http: HttpClient) {
-  }
-
-  saveMarks(studentId: number, formListMarks: FormListMarks): Observable<any> {
-
-    return this.http.put(this.url + `/save/marks/${studentId}`, formListMarks, {observe: 'response'});
   }
 
   getNameSubject(): Observable<any> {

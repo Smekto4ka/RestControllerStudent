@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.oogis.model.Student;
 import ru.oogis.model.SubjectEnum;
+import ru.oogis.model.form.FormListMarks;
 import ru.oogis.service.StudentService;
 
 import javax.validation.Valid;
@@ -65,4 +66,13 @@ public class RestStudentController {
     public SubjectEnum[] getNameSubject() {
         return SubjectEnum.values();
     }
+
+    @PutMapping("/save/marks/{studentId}")
+    public ResponseEntity<Student> saveMarks(@PathVariable long studentId, @Valid @RequestBody FormListMarks formListMarks, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        studentService.setMarksByIdStudentsAndSubject(studentId, formListMarks.getPredmet(), formListMarks.getList());
+        return new ResponseEntity<>(getStudentById(studentId), HttpStatus.OK);
+    }
+
 }
