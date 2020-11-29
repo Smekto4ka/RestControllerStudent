@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PostStudentComponent} from './post-student/post-student.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 const appRoutes: Routes = [
   {path: 'listStudent', component: StudentComponent},
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
+    MatExpansionModule
 
   ],
   providers: [],

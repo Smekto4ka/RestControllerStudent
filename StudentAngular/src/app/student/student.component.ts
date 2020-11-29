@@ -4,7 +4,6 @@ import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {ValidStudent} from '../model/ValidStudent';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatSelectModule} from '@angular/material/select';
 import {FormListMarks} from '../model/FormListMarks';
 
 @Component({
@@ -76,11 +75,7 @@ export class StudentComponent implements OnInit {
 
 
 export class StudentObj {
-  public visibleInfo = false;
-  public visibleUpdate = false;
   public putStudent: ValidStudent;
-  public visibleWindowsMarks = false;
-  public length = 1;
   public marksForm: FormGroup;
 
   constructor(public student: Student) {
@@ -92,31 +87,15 @@ export class StudentObj {
     });
   }
 
-
-  public isVisibleInfoStudent() {
-    this.visibleInfo = !this.visibleInfo;
-  }
-
-  public isVisibleUpdateStudent() {
-
-    this.visibleUpdate = !this.visibleUpdate;
-
-  }
-
-  public isVisibleWindowsMarks() {
-    this.visibleWindowsMarks = !this.visibleWindowsMarks;
-  }
-
-
   public updateArraysMarks(event: string) {
     const value = Number.parseInt(event);
-    this.length = (<FormArray> this.marksForm.controls['marks']).length;
-    if (this.length - value > 0) {
-      for (let i = this.length; i >= value; i = i - 1) {
+    const length = (<FormArray> this.marksForm.controls['marks']).length;
+    if (length - value > 0) {
+      for (let i = length; i >= value; i = i - 1) {
         (<FormArray> this.marksForm.controls['marks']).removeAt(i);
       }
     } else {
-      for (let i = 0; i < value - this.length; i = i + 1) {
+      for (let i = 0; i < value - length; i = i + 1) {
         (<FormArray> this.marksForm.controls['marks'])
           .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
       }

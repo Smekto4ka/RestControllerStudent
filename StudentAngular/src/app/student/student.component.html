@@ -1,33 +1,38 @@
-<ul class="container" style="text-align: center">
-  <li *ngFor="let form of studentObj">
-    <span>
+<mat-accordion >
+  <mat-expansion-panel *ngFor="let form of studentObj" class = "mat-app-background basic-container" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>
       <strong>{{form.student.studentId}}</strong>
-      {{form.student.lastName}}
-      {{form.student.firstName}}
-      {{form.student.years}}
+          {{form.student.lastName}}
+          {{form.student.firstName}}
+          {{form.student.years}}
     </span>
-    <button class="btn btn-warning"
-            (click)="form.isVisibleInfoStudent()">{{form.visibleInfo ? 'close' : 'open'}}</button>
+      </mat-panel-title>
+      <mat-panel-description>
+        Currently I am
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
 
-    <div *ngIf="form.visibleInfo" class="container">
-      <div *ngFor="let subjectB of form.student.subjectBinderAll">
+    <div *ngFor="let subjectB of form.student.subjectBinderAll">
        <span>
       <strong>{{subjectB.subject.subjectName}}</strong>
         <a *ngFor="let marks of subjectB.marksList">
           {{marks.marks}}
         </a>
     </span>
+    </div>
 
 
-      </div>
-      <button class="btn btn-warning"
-              (click)="form.isVisibleUpdateStudent()">{{form.visibleUpdate ? 'closeUpdate' : 'openUpdate'}}</button>
-      <button class="btn btn-warning" (click)="form.isVisibleWindowsMarks()">add marks</button>
-      <button class="btn btn-warning" (click)="deleteStudent(form.student.studentId)">delete</button>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          update Student
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-
-      <div *ngIf="form.visibleUpdate" class="form-group" [formGroup]="form.putStudent.myForm">
+      <div class="form-group" [formGroup]="form.putStudent.myForm">
 
         <input type="text" placeholder="lastName"
                class="form-control" formControlName="lastName" name="lastName">
@@ -48,14 +53,22 @@
              *ngIf="form.putStudent.myForm.controls['years'].invalid && form.putStudent.myForm.controls['years'].touched">
           неправильное значение
         </div>
-
+      </div>
+      <mat-action-row>
         <button class="btn btn-warning" [disabled]="form.putStudent.myForm.invalid"
                 (click)="updateStudent(form.student.studentId)">Update
         </button>
-      </div>
+      </mat-action-row>
+    </mat-expansion-panel>
 
 
-      <form *ngIf="form.visibleWindowsMarks" [formGroup]="form.marksForm" class="form-group">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          save Marks
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="form.marksForm" class="form-group">
         <form-field appearance="fill">
           <label>Subject </label>
           <select #name>
@@ -63,8 +76,9 @@
           </select>
         </form-field>
 
-        <input type="number" placeholder="numberMarks" min="0" #box
+        <input type="number" placeholder="numberMarks" min="1" value="1" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
+        <br>
         <div *ngFor="let marks of form.marksForm.controls['marks']['controls'] , let ind = index" formArrayName="marks">
 
           <input type="number" placeholder="marks № {{ind}}" min="0" max="5"
@@ -74,12 +88,24 @@
             неправильное значение
           </div>
         </div>
+
+      </form>
+      <mat-action-row>
         <button class="btn btn-warning" [disabled]="form.marksForm.invalid"
                 (click)="saveMarks(form.student.studentId , name.value)">save marks
         </button>
-      </form>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-action-row>
+      <button class="btn btn-warning" (click)="deleteStudent(form.student.studentId)">delete</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
 
 
-    </div>
-  </li>
-</ul>
+
+
+
+
+
+
