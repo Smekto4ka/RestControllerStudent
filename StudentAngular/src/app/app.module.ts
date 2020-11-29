@@ -10,6 +10,7 @@ import {PostStudentComponent} from './post-student/post-student.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {StudentFilterPipe} from './shared/service/student-filter.pipe';
 
 const appRoutes: Routes = [
   {path: 'listStudent', component: StudentComponent},
@@ -20,7 +21,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     StudentComponent,
-    PostStudentComponent
+    PostStudentComponent,
+    StudentFilterPipe
   ],
   imports: [
     BrowserModule,

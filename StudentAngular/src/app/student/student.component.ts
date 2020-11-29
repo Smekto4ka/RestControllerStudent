@@ -13,8 +13,11 @@ import {FormListMarks} from '../model/FormListMarks';
 })
 export class StudentComponent implements OnInit {
 
-  public studentObj: StudentObj[] = [];
-  public nameSubject: string[] = [];
+  studentObj: StudentObj[] = [];
+  nameSubject: string[] = [];
+  minimumId: string = null;
+  maximumId: string = null;
+
 
   constructor(private studentService: StudentService) {
   }
@@ -35,6 +38,7 @@ export class StudentComponent implements OnInit {
       }
     });
   }
+
 
   saveMarks(id: number, name: string) {
 

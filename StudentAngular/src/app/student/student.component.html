@@ -1,5 +1,12 @@
-<mat-accordion >
-  <mat-expansion-panel *ngFor="let form of studentObj" class = "mat-app-background basic-container" >
+<mat-accordion>
+  <div class="filter">
+    <input type="number" placeholder="minId" min="0" [(ngModel)]="minimumId">
+    <input type="number" placeholder="maxId" min="0" [(ngModel)]="maximumId">
+
+  </div>
+
+  <mat-expansion-panel *ngFor="let form of studentObj | filterStudentById: minimumId : maximumId"
+                       class="color-papayawhip">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span>
@@ -25,7 +32,7 @@
     </div>
 
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="color-white">
       <mat-expansion-panel-header>
         <mat-panel-title>
           update Student
@@ -62,7 +69,7 @@
     </mat-expansion-panel>
 
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class="color-white">
       <mat-expansion-panel-header>
         <mat-panel-title>
           save Marks
