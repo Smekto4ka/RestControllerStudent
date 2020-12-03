@@ -4,9 +4,17 @@
     <input type="number" placeholder="maxId" min="0" [(ngModel)]="maximumId">
 
   </div>
+  <mat-paginator [length]="studentObj.length"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="setSettingsPage($event)">
+  </mat-paginator>
 
-  <mat-expansion-panel *ngFor="let form of studentObj | filterStudentById: minimumId : maximumId"
-                       class="color-papayawhip">
+  <mat-expansion-panel *ngFor="let form of studentObj
+  | filterStudentById: minimumId : maximumId
+ | paginate: {itemsPerPage: itemsPerPage ,  currentPage: currentPage} ;
+  let result = count ; let last = last"  class="color-papayawhip" #updatePage>
+    {{ last ? log(result) : log('*') }}
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span>

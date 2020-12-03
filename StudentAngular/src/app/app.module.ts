@@ -11,6 +11,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {StudentFilterPipe} from './shared/service/student-filter.pipe';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {NgxPaginationModule} from 'ngx-pagination';
+
 
 const appRoutes: Routes = [
   {path: 'listStudent', component: StudentComponent},
@@ -32,8 +35,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSelectModule,
-    MatExpansionModule
-
+    MatExpansionModule,
+    MatPaginatorModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

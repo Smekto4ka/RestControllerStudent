@@ -1,6 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {StudentObj} from '../../student/student.component';
 
+
 @Pipe({
   name: 'filterStudentById'
 })
