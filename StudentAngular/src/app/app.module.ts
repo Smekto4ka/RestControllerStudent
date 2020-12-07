@@ -8,9 +8,10 @@ import {StudentComponent} from './student/student.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PostStudentComponent} from './post-student/post-student.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatSelectModule} from '@angular/material/select';
-import {MatExpansionModule} from '@angular/material/expansion';
+
 import {StudentFilterPipe} from './shared/service/student-filter.pipe';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
 
 const appRoutes: Routes = [
   {path: 'listStudent', component: StudentComponent},
