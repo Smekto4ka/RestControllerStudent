@@ -1,4 +1,4 @@
-import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
@@ -7,21 +7,22 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FormListMarks} from '../model/FormListMarks';
 import {PageEvent} from '@angular/material/paginator';
 
+
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
+
   styleUrls: ['./student.component.scss']
 })
 export class StudentComponent implements OnInit {
 
   studentObj: StudentObj[] = [];
   nameSubject: string[] = [];
-  minimumId: string = null;
-  maximumId: string = null;
+
 
   currentPage = 1;
   itemsPerPage = 5;
-  lengthPage = this.studentObj.length;
+
 
   constructor(private studentService: StudentService) {
   }
@@ -33,17 +34,12 @@ export class StudentComponent implements OnInit {
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
   }
 
-  @ViewChildren('updatePage') updatePage: QueryList<any>;
-
 
   setSettingsPage(event: PageEvent) {
     this.itemsPerPage = event.pageSize;
     this.currentPage = event.pageIndex + 1;
   }
 
-  log(event: any) {
-    console.log(this.updatePage);
-  }
 
   deleteStudent(id: number) {
 
@@ -56,9 +52,9 @@ export class StudentComponent implements OnInit {
   }
 
 
-  saveMarks(id: number, name: string) {
+  saveMarks(id: number, name: string): void {
 
-    this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksForm.value['marks']))
+    this.studentService.saveMarks(id, new FormListMarks(name,( <FormArray> this.studentObj[this.getIndex(id)].formGroup.get('marks')).getRawValue()))
       .subscribe((event: HttpEvent<Student>) => {
         if (event.type === HttpEventType.Response && event.ok) {
           if (event.body != null) {
@@ -70,7 +66,7 @@ export class StudentComponent implements OnInit {
       });
   }
 
-  updateStudent(id: number) {
+  updateStudent(id: number) : void{
     const indx = this.getIndex(id);
     const studObj = this.studentObj[indx];
     this.studentService.updateStudent(studObj.putStudent)
@@ -93,27 +89,27 @@ export class StudentComponent implements OnInit {
 
 export class StudentObj {
   public putStudent: ValidStudent;
-  public marksForm: FormGroup;
+  public formGroup: FormGroup;
 
   constructor(public student: Student) {
     this.putStudent = new ValidStudent(student.studentId, '', '', 0);
-    this.marksForm = new FormGroup({
+    this.formGroup = new FormGroup({
       marks: new FormArray([
         new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)])
       ])
     });
   }
 
-  public updateArraysMarks(event: string) {
-    const value = Number.parseInt(event);
-    const length = (<FormArray> this.marksForm.controls['marks']).length;
+  public updateArraysMarks(event: string): void {
+    const value = Number(event);
+    const length = (<FormArray> this.formGroup.get('marks')).length;
     if (length - value > 0) {
       for (let i = length; i >= value; i = i - 1) {
-        (<FormArray> this.marksForm.controls['marks']).removeAt(i);
+        (<FormArray> this.formGroup.get('marks')).removeAt(i);
       }
     } else {
       for (let i = 0; i < value - length; i = i + 1) {
-        (<FormArray> this.marksForm.controls['marks'])
+        (<FormArray> this.formGroup.get('marks'))
           .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
       }
     }

@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
@@ -13,6 +13,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {StudentFilterPipe} from './shared/service/student-filter.pipe';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {MatButtonModule} from '@angular/material/button';
 
 
 const appRoutes: Routes = [
@@ -38,7 +39,9 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatPaginatorModule,
     NgxPaginationModule,
+    MatButtonModule,
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
 })
