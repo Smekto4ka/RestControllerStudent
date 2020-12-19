@@ -13,7 +13,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {StudentFilterPipe} from './shared/service/student-filter.pipe';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {MatButtonModule} from '@angular/material/button';
 
 
 const appRoutes: Routes = [
@@ -39,10 +38,10 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatPaginatorModule,
     NgxPaginationModule,
-    MatButtonModule,
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA],
+
   providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule {

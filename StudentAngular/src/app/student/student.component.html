@@ -1,7 +1,7 @@
 <mat-accordion>
   <div class="filter">
-    <input type="number" placeholder="minId" min="0" #minimumId>
-    <input type="number" placeholder="maxId" min="0" #maximumId>
+    <input type="number" placeholder="minId" min="0" [(ngModel)]="minimumId">
+    <input type="number" placeholder="maxId" min="0" [(ngModel)]="maximumId">
 
   </div>
   <mat-paginator [length]="studentObj.length"
@@ -11,8 +11,9 @@
   </mat-paginator>
 
   <mat-expansion-panel *ngFor="let form of studentObj
-  | filterStudentById: minimumId.value : maximumId.value
- | paginate: {itemsPerPage: itemsPerPage ,  currentPage: currentPage}"  class="color-papayawhip">
+  | filterStudentById: minimumId : maximumId
+ | paginate: {itemsPerPage: itemsPerPage ,  currentPage: currentPage} ;
+  let result = count ; let last = last"  class="color-papayawhip" >
 
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -82,7 +83,7 @@
           save Marks
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <form [formGroup]="form.formGroup" >
+      <form [formGroup]="form.marksForm" class="form-group">
         <form-field appearance="fill">
           <label>Subject </label>
           <select #name>
@@ -93,10 +94,9 @@
         <input type="number" placeholder="numberMarks" min="1" value="1" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
         <br>
-        <div *ngFor="let marks of form.formGroup.controls['marks']['controls'] , let ind = index" formArrayName="marks">
-
+        <div *ngFor="let marks of form.marksForm.controls['marks']['controls'] , let ind = index" formArrayName="marks">
           <input type="number" placeholder="marks № {{ind}}" min="0" max="5"
-             class="form-control" formControlName="{{ind}}"  >
+                 class="form-control" formControlName="{{ind}}">
           <div class="alert alert-danger"
                *ngIf="marks.invalid">
             неправильное значение
@@ -105,7 +105,7 @@
 
       </form>
       <mat-action-row>
-        <button class="btn btn-warning" [disabled]="form.formGroup.invalid"
+        <button class="btn btn-warning" [disabled]="form.marksForm.invalid"
                 (click)="saveMarks(form.student.studentId , name.value)">save marks
         </button>
       </mat-action-row>
