@@ -94,7 +94,7 @@
         <input type="number" placeholder="numberMarks" min="1" value="1" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
         <br>
-        <div *ngFor="let marks of form.marksForm.controls['marks']['controls'] , let ind = index" formArrayName="marks">
+        <div *ngFor="let marks of form.marksFormArray().controls , let ind = index" formArrayName="marks">
           <input type="number" placeholder="marks № {{ind}}" min="0" max="5"
                  class="form-control" formControlName="{{ind}}">
           <div class="alert alert-danger"
