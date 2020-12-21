@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 import {ValidStudent} from '../model/ValidStudent';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FormListMarks} from '../model/FormListMarks';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-student',
@@ -15,9 +16,11 @@ export class StudentComponent implements OnInit {
 
   studentObj: StudentObj[] = [];
   nameSubject: string[] = [];
-  minimumId: string = null;
-  maximumId: string = null;
+  minimumId: any = null;
+  maximumId: any = null;
 
+  currentPage = 1;
+  itemsPerPage = 5;
 
   constructor(private studentService: StudentService) {
   }
@@ -27,6 +30,17 @@ export class StudentComponent implements OnInit {
     this.studentService.getStudent().subscribe(student => this.studentObj = student
       .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new StudentObj(stud)));
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
+  }
+
+
+
+  setSettingsPage(event: PageEvent) {
+    this.itemsPerPage = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+  }
+
+  log(event: any) {
+    console.log(event);
   }
 
   deleteStudent(id: number) {
@@ -52,9 +66,6 @@ export class StudentComponent implements OnInit {
           }
         }
       });
-
-    console.log(this.studentObj[this.getIndex(id)].marksForm.value['marks']);
-    console.log(name);
   }
 
   updateStudent(id: number) {

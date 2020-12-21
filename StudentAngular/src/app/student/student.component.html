@@ -4,9 +4,15 @@
     <input type="number" placeholder="maxId" min="0" [(ngModel)]="maximumId">
 
   </div>
+  <mat-paginator [length]="studentObj.length"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="setSettingsPage($event)">
+  </mat-paginator>
 
-  <mat-expansion-panel *ngFor="let form of studentObj | filterStudentById: minimumId : maximumId"
-                       class="color-papayawhip">
+  <mat-expansion-panel *ngFor="let form of studentObj
+  | filterStudentById: minimumId : maximumId
+ | paginate: {itemsPerPage: itemsPerPage , currentPage: currentPage}"  class="color-papayawhip" >
     <mat-expansion-panel-header>
       <mat-panel-title>
         <span>
@@ -76,12 +82,12 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <form [formGroup]="form.marksForm" class="form-group">
-        <form-field appearance="fill">
-          <label>Subject </label>
-          <select #name>
-            <option *ngFor="let nameSb of nameSubject" value="{{nameSb}}">{{nameSb}}</option>
-          </select>
-        </form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Subject </mat-label>
+          <mat-select #name>
+            <mat-option *ngFor="let nameSb of nameSubject" value="{{nameSb}}">{{nameSb}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <input type="number" placeholder="numberMarks" min="1" value="1" #box
                class="form-control" (change)="form.updateArraysMarks(box.value)" name="numberMarks">
