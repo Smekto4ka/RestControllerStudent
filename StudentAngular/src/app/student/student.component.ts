@@ -1,4 +1,4 @@
-import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StudentService} from '../shared/service/student.service';
 import {Student} from '../model/Student';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
@@ -16,8 +16,9 @@ export class StudentComponent implements OnInit {
 
   studentObj: StudentObj[] = [];
   nameSubject: string[] = [];
-  minimumId: any = null;
-  maximumId: any = null;
+
+  minimumId = '';
+  maximumId = '';
 
   currentPage = 1;
   itemsPerPage = 5;
@@ -33,17 +34,12 @@ export class StudentComponent implements OnInit {
   }
 
 
-
-  setSettingsPage(event: PageEvent) {
+  setSettingsPage(event: PageEvent): void {
     this.itemsPerPage = event.pageSize;
     this.currentPage = event.pageIndex + 1;
   }
 
-  log(event: any) {
-    console.log(event);
-  }
-
-  deleteStudent(id: number) {
+  deleteStudent(id: number): void {
 
     this.studentService.deleteStudent(id).subscribe(resp => {
       if (resp.ok) {
@@ -54,9 +50,9 @@ export class StudentComponent implements OnInit {
   }
 
 
-  saveMarks(id: number, name: string) {
+  saveMarks(id: number, name: string): void {
 
-    this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksForm.value['marks']))
+    this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()))
       .subscribe((event: HttpEvent<Student>) => {
         if (event.type === HttpEventType.Response && event.ok) {
           if (event.body != null) {
@@ -68,7 +64,7 @@ export class StudentComponent implements OnInit {
       });
   }
 
-  updateStudent(id: number) {
+  updateStudent(id: number): void {
     const indx = this.getIndex(id);
     const studObj = this.studentObj[indx];
     this.studentService.updateStudent(studObj.putStudent)
@@ -102,16 +98,21 @@ export class StudentObj {
     });
   }
 
-  public updateArraysMarks(event: string) {
-    const value = Number.parseInt(event);
-    const length = (<FormArray> this.marksForm.controls['marks']).length;
+  public marksFormArray(): FormArray {
+    return (<FormArray> this.marksForm.get('marks'));
+  }
+
+  public updateArraysMarks(event: string): void {
+
+    const value = Number(event);
+    const length = this.marksFormArray().length;
     if (length - value > 0) {
       for (let i = length; i >= value; i = i - 1) {
-        (<FormArray> this.marksForm.controls['marks']).removeAt(i);
+        this.marksFormArray().removeAt(i);
       }
     } else {
       for (let i = 0; i < value - length; i = i + 1) {
-        (<FormArray> this.marksForm.controls['marks'])
+        this.marksFormArray()
           .push(new FormControl(0, [Validators.required, Validators.max(5), Validators.min(0)]));
       }
     }

@@ -6,16 +6,21 @@ import {StudentObj} from '../../student/student.component';
   name: 'filterStudentById'
 })
 export class StudentFilterPipe implements PipeTransform {
-  transform(student: StudentObj[], minimum: number, maximum: number): StudentObj[] {
-
-    if (minimum !== null && maximum !== null) {
-      return student.filter(stud => stud.student.studentId >= minimum && stud.student.studentId <= maximum);
+  transform(student: StudentObj[], minimum: string, maximum: string): StudentObj[] {
+    if (maximum === null) {
+      maximum = '';
     }
-    if (minimum !== null && maximum === null) {
-      return student.filter(stud => stud.student.studentId >= minimum);
+    if (minimum === null) {
+      minimum = '';
     }
-    if (minimum === null && maximum !== null) {
-      return student.filter(stud => stud.student.studentId <= maximum);
+    if (minimum !== '' && maximum !== '') {
+      return student.filter(stud => stud.student.studentId >= Number(minimum) && stud.student.studentId <= Number(maximum));
+    }
+    if (minimum !== '' && maximum === '') {
+      return student.filter(stud => stud.student.studentId >= Number(minimum));
+    }
+    if (minimum === '' && maximum !== '') {
+      return student.filter(stud => stud.student.studentId <= Number(maximum));
     }
     return student;
   }
