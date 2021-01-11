@@ -17,11 +17,13 @@ export class StudentComponent implements OnInit {
 
   studentObj: WrapperStudent[] = [];
   nameSubject: string[] = [];
+
   minimumId = '';
   maximumId = '';
 
   currentPage = 1;
   itemsPerPage = 5;
+
 
 
   constructor(private studentService: StudentService, private webSocket: WebSocketService) {
@@ -30,6 +32,7 @@ export class StudentComponent implements OnInit {
   /*  webSocket.stompStudent.subscribe('/topic/update', function(sdkEvent) {
       console.log(sdkEvent);
     });*/
+
 
   }
 
@@ -49,7 +52,6 @@ export class StudentComponent implements OnInit {
     this.itemsPerPage = event.pageSize;
     this.currentPage = event.pageIndex + 1;
   }
-
 
   deleteStudent(id: number): void {
 

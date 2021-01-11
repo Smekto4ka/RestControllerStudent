@@ -13,8 +13,7 @@
 
   <mat-expansion-panel *ngFor="let form of studentObj
   | filterStudentById: minimumId : maximumId
- | paginate: {itemsPerPage: itemsPerPage ,  currentPage: currentPage} ;
-  let result = count ; let last = last"  class="color-papayawhip" >
+ | paginate: {itemsPerPage: itemsPerPage , currentPage: currentPage}"  class="color-papayawhip" >
 
     <mat-expansion-panel-header>
       <mat-panel-title>
