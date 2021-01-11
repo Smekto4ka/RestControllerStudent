@@ -10,7 +10,7 @@ import {PostStudentComponent} from './post-student/post-student.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {StudentFilterPipe} from './shared/service/student-filter.pipe';
+import {StudentFilterPipe} from './shared/student-filter.pipe';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxPaginationModule} from 'ngx-pagination';
 
@@ -37,7 +37,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatExpansionModule,
     MatPaginatorModule,
-    NgxPaginationModule,
+    NgxPaginationModule
+
   ],
 
   providers: [],

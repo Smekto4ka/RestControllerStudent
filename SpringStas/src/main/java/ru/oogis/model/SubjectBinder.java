@@ -13,10 +13,10 @@ public class SubjectBinder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long binderId;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true , fetch = FetchType.EAGER)
     private List<Marks> marksList;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Subject subject;
 
     public SubjectBinder() {

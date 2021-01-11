@@ -6,6 +6,7 @@ import {ValidStudent} from '../model/ValidStudent';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FormListMarks} from '../model/FormListMarks';
 import {PageEvent} from '@angular/material/paginator';
+import {WebSocketService} from '../shared/service/web-socket.service';
 
 @Component({
   selector: 'app-student',
@@ -14,7 +15,7 @@ import {PageEvent} from '@angular/material/paginator';
 })
 export class StudentComponent implements OnInit {
 
-  studentObj: StudentObj[] = [];
+  studentObj: WrapperStudent[] = [];
   nameSubject: string[] = [];
   minimumId = '';
   maximumId = '';
@@ -23,16 +24,26 @@ export class StudentComponent implements OnInit {
   itemsPerPage = 5;
 
 
-  constructor(private studentService: StudentService) {
+  constructor(private studentService: StudentService, private webSocket: WebSocketService) {
+    //TODO
+
+  /*  webSocket.stompStudent.subscribe('/topic/update', function(sdkEvent) {
+      console.log(sdkEvent);
+    });*/
+
   }
 
 
   ngOnInit(): void {
     this.studentService.getStudent().subscribe(student => this.studentObj = student
-      .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new StudentObj(stud)));
+      .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new WrapperStudent(stud)));
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
   }
 
+  buttonClicker() {
+
+    this.webSocket.send('55555');
+  }
 
   setSettingsPage(event: PageEvent): void {
     this.itemsPerPage = event.pageSize;
@@ -51,21 +62,26 @@ export class StudentComponent implements OnInit {
   }
 
 
+  /*  saveMarks(id: number, name: string): void {
+
+       this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()))
+         .subscribe((event: HttpEvent<Student>) => {
+           if (event.type === HttpEventType.Response && event.ok) {
+             if (event.body != null) {
+
+               this.studentObj[this.getIndex(event.body.studentId)].student = event.body;
+
+             }
+           }
+         });
+     }*/
+
   saveMarks(id: number, name: string): void {
-
-    this.studentService.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()))
-      .subscribe((event: HttpEvent<Student>) => {
-        if (event.type === HttpEventType.Response && event.ok) {
-          if (event.body != null) {
-
-            this.studentObj[this.getIndex(event.body.studentId)].student = event.body;
-
-          }
-        }
-      });
+    this.webSocket.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()));
   }
 
-  updateStudent(id: number): void {
+
+  /*updateStudent(id: number): void {
     const indx = this.getIndex(id);
     const studObj = this.studentObj[indx];
     this.studentService.updateStudent(studObj.putStudent)
@@ -77,6 +93,13 @@ export class StudentComponent implements OnInit {
           }
         }
       });
+  }*/
+
+
+  updateStudent(id: number): void {
+    const indx = this.getIndex(id);
+    const studObj = this.studentObj[indx];
+    this.webSocket.updateStudent(studObj.putStudent);
   }
 
   getIndex(id: number): number {
@@ -86,7 +109,7 @@ export class StudentComponent implements OnInit {
 }
 
 
-export class StudentObj {
+export class WrapperStudent {
   public putStudent: ValidStudent;
   public marksForm: FormGroup;
 

@@ -52,6 +52,7 @@ public class RestStudentController {
         if (bindingResult.hasErrors())
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         studentService.postStudent(student);
+
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

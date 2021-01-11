@@ -1,10 +1,13 @@
 package ru.oogis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 import ru.oogis.model.FilterCriterion;
 import ru.oogis.model.SubjectEnum;
 import ru.oogis.model.Student;
@@ -16,7 +19,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/student")
+
 public class WebController {
 
     private final StudentService studentService;

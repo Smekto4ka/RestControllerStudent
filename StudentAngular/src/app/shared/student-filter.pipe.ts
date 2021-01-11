@@ -1,12 +1,12 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {StudentObj} from '../../student/student.component';
+import {WrapperStudent} from '../student/student.component';
 
 
 @Pipe({
   name: 'filterStudentById'
 })
 export class StudentFilterPipe implements PipeTransform {
-  transform(student: StudentObj[], minimum: string, maximum: string): StudentObj[] {
+  transform(student: WrapperStudent[], minimum: string, maximum: string): WrapperStudent[] {
     if (maximum === null) {
       maximum = '';
     }

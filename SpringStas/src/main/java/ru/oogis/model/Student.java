@@ -37,8 +37,8 @@ public class Student {
     @Max(150)
     private int years;
 
-    @OneToMany(orphanRemoval = true)
-    private Map<Integer, SubjectBinder> subjectBinderMap;
+    @OneToMany(orphanRemoval = true , fetch = FetchType.EAGER)
+    private Map<Integer, SubjectBinder> subjectBinderMap = new HashMap<>();
 
     public Student(long studentId, String firstName, String lastName, int years) {
         this.studentId = studentId;
@@ -122,6 +122,10 @@ public class Student {
     public List<SubjectBinder> getSubjectBinderAll() {
         return new LinkedList<>(subjectBinderMap.values());
     }
+    //TODO
+    public void setSubjectBinderAll(List<SubjectBinder> subjectBinderList){
+
+    }
 
     public SubjectBinder getSubjectBinderById(int subjectId) {
         return subjectBinderMap.get(subjectId);
@@ -140,5 +144,16 @@ public class Student {
             return subjectBinderMap.get(subjectId).getAverage();
         }
         return OptionalDouble.empty();
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", years=" + years +
+                ", subjectBinderMap=" + subjectBinderMap +
+                '}';
     }
 }

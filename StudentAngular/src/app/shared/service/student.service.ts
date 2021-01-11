@@ -10,9 +10,7 @@ import {FormListMarks} from '../../model/FormListMarks';
 export class StudentService {
   private url = 'http://localhost:8180/restStudent';
 
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   saveMarks(studentId: number, formListMarks: FormListMarks): Observable<any> {
 
