@@ -15,7 +15,7 @@ export class WebSocketService {
   private url = 'http://localhost:8180';
   private webSocketEndPoint = 'http://localhost:8180/ws';
   topic: string = '/topic/connect';
-  public stompStudent: Stomp.Client;
+  public stompStudent: any;
 
   constructor(private http: HttpClient) {
     this.connect();

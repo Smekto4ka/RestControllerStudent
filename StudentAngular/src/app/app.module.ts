@@ -9,7 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PostStudentComponent} from './post-student/post-student.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {StudentFilterPipe} from './shared/service/student-filter.pipe';
+
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {StudentFilterPipe} from './shared/student-filter.pipe';
 
 
 
