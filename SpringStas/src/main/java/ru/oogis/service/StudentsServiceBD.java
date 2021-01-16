@@ -62,7 +62,7 @@ public class StudentsServiceBD implements StudentService {
             List<Marks> marksList = valueMarksList.stream().map(Marks::new).peek(marks -> marksRepository.save(marks)).collect(Collectors.toList());
             subjectBinder.saveMarks(marksList);
             updateSubjectBinder(subjectBinder);
-            updateStudent(student);
+            studentsRepository.save(student);
         });
     }
 

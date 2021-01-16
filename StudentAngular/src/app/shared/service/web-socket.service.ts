@@ -8,38 +8,57 @@ import {HttpClient} from '@angular/common/http';
 import {Student} from '../../model/Student';
 import {SubjectBinder} from '../../model/SubjectBinder';
 import {Subject} from '../../model/Subject';
+import {StudentComponent} from '../../student/student.component';
 
 
 @Injectable({providedIn: 'root'})
 export class WebSocketService {
-  private url = 'http://localhost:8180';
   private webSocketEndPoint = 'http://localhost:8180/ws';
-  topic: string = '/topic/connect';
-  public stompStudent: any;
+  public stompStudent: Stomp.Client;
+  public studentComponent: StudentComponent;
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    let ws = new SockJS(this.webSocketEndPoint);
+    this.stompStudent = Stomp.over(ws);
     this.connect();
   }
 
-  connect() {
+
+  connect(): void {
     console.log('Initialize WebSocket Connection');
-    let ws = new SockJS(this.webSocketEndPoint);
-    this.stompStudent = Stomp.over(ws);
+
     const ts = this;
     this.stompStudent.connect({}, function(frame) {
-
-      ts.stompStudent.subscribe(ts.topic, function(sdkEvent: any) {
-        ts.onMessageReceived(sdkEvent);
-      });
-      ts.stompStudent.subscribe('/topic/update', function(studentMessage) {
-        console.log(JSON.parse(studentMessage.body));
-      });
-
-   //   ts.send('start');
-
+      ts.webSocketSubscription();
+      ts.studentComponentSubscription();
       //this.stompClient.reconnect_delay = 2000;
     }, this.errorCallBack);
   }
+
+
+  webSocketSubscription(): void {
+    const ts = this;
+    ts.send('dop client');
+    this.stompStudent.subscribe('/topic/connect', function(sdkEvent: any) {
+      ts.onMessageReceived(sdkEvent);
+    });
+  }
+
+
+  studentComponentSubscription(): void {
+    const ts = this;
+    ts.stompStudent.subscribe('/topic/update', function(sdkEvent: any) {
+      if (ts.studentComponent !== undefined) {
+        ts.studentComponent.updateStudentBySubscription(sdkEvent);
+      }
+    });
+    ts.stompStudent.subscribe('/topic/delete', function(sdkEvent: any) {
+      if (ts.studentComponent !== undefined) {
+        ts.studentComponent.deleteStudentBySubscription(sdkEvent);
+      }
+    });
+  }
+
 
   onMessageReceived(message: any): void {
     console.log('Message Recieved from Server :: ' + JSON.stringify(message.body));
@@ -58,14 +77,24 @@ export class WebSocketService {
     }, 5000);
   }
 
-  saveMarks(studentId: number, formListMarks: FormListMarks): void {
-
-    this.http.put(this.url + `/save/marks/${studentId}`, formListMarks, {observe: 'response'}).subscribe();
+  saveMarks(formListMarks: FormListMarks): void {
+    this.stompStudent.send('/app/save/marks', {}, JSON.stringify(formListMarks));
+    // this.http.put(this.url + `/save/marks/${studentId}`, formListMarks, {observe: 'response'}).subscribe();
   }
 
   updateStudent(student: ValidStudent): void {
     this.stompStudent.send('/app/update', {}, JSON.stringify(this.converterValidStudent(student)));
     // this.http.put(this.url, this.converterValidStudent(student), {observe: 'events'}).subscribe();
+  }
+
+  deleteStudent(studentId: number): void {
+    this.stompStudent.send('/app/delete', {}, JSON.stringify(studentId));
+    // return this.http.delete(this.url + `/${studentId}`, {observe: 'response'});
+
+  }
+
+  postStudent(student: ValidStudent): void {
+    this.stompStudent.send('/app/postStudent', {}, JSON.stringify(this.converterValidStudent(student)));
   }
 
   converterValidStudent(student: ValidStudent): PutStudent {
@@ -79,11 +108,9 @@ export class WebSocketService {
 }
 
 export class PutStudent {
- //public subjectBinderMap: Map<number , SubjectBinder> = new Map<number, SubjectBinder>();
   constructor(public studentId: number,
               public firstName: string,
               public lastName: string,
               public years: number) {
-  //  this.subjectBinderMap.set(0 , new SubjectBinder(1 , new Subject(1 , 'histor') , [] , 5));
   }
 }

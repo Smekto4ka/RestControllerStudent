@@ -25,15 +25,8 @@ export class StudentComponent implements OnInit {
   itemsPerPage = 5;
 
 
-
   constructor(private studentService: StudentService, private webSocket: WebSocketService) {
-    //TODO
-
-  /*  webSocket.stompStudent.subscribe('/topic/update', function(sdkEvent) {
-      console.log(sdkEvent);
-    });*/
-
-
+    webSocket.studentComponent = this;
   }
 
 
@@ -43,9 +36,10 @@ export class StudentComponent implements OnInit {
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
   }
 
-  buttonClicker() {
 
-    this.webSocket.send('55555');
+  buttonClicker() {
+    console.log(this.webSocket.stompStudent);
+
   }
 
   setSettingsPage(event: PageEvent): void {
@@ -53,16 +47,27 @@ export class StudentComponent implements OnInit {
     this.currentPage = event.pageIndex + 1;
   }
 
-  deleteStudent(id: number): void {
+  /* deleteStudent(id: number): void {
 
-    this.studentService.deleteStudent(id).subscribe(resp => {
-      if (resp.ok) {
-        const indx = this.getIndex(id);
-        this.studentObj.splice(indx, 1);
-      }
-    });
+     this.studentService.deleteStudent(id).subscribe(resp => {
+       if (resp.ok) {
+         const indx = this.getIndex(id);
+         this.studentObj.splice(indx, 1);
+       }
+     });
+   }*/
+  deleteStudent(id: number): void {
+    this.webSocket.deleteStudent(id);
   }
 
+  deleteStudentBySubscription(jsonStudentID: any): void {
+    console.log(JSON.parse(jsonStudentID.body));
+    const studentID: number = JSON.parse(jsonStudentID.body);
+    const indx = this.getIndex(studentID);
+    if (indx >= 0) {
+      this.studentObj.splice(indx, 1);
+    }
+  }
 
   /*  saveMarks(id: number, name: string): void {
 
@@ -79,7 +84,7 @@ export class StudentComponent implements OnInit {
      }*/
 
   saveMarks(id: number, name: string): void {
-    this.webSocket.saveMarks(id, new FormListMarks(name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()));
+    this.webSocket.saveMarks(new FormListMarks(id, name, this.studentObj[this.getIndex(id)].marksFormArray().getRawValue()));
   }
 
 
@@ -96,7 +101,17 @@ export class StudentComponent implements OnInit {
         }
       });
   }*/
-
+  updateStudentBySubscription(jsonStudent: any): void {
+    const student: Student = JSON.parse(jsonStudent.body);
+    console.log(student.subjectBinderMap);
+    const indx = this.getIndex(student.studentId);
+    if (indx >= 0) {
+      const studentWrapper = this.studentObj[indx];
+      studentWrapper.student = student;
+    } else {
+      this.studentObj.push(new WrapperStudent(student));
+    }
+  }
 
   updateStudent(id: number): void {
     const indx = this.getIndex(id);

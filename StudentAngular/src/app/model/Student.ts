@@ -6,6 +6,7 @@ export class Student {
     public firstName: string,
     public lastName: string,
     public years: number,
+    public subjectBinderMap: Map<number , SubjectBinder>,
     //TODO
     public subjectBinderAll: SubjectBinder[]
   ) {

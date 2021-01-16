@@ -47,8 +47,8 @@ public class WebSocketController {
 
     }
 
-    @PostMapping()
-    @SendTo("/topic/addStudent")
+    @MessageMapping("/postStudent")
+    @SendTo("/topic/update")
     public Student postStudent(@Valid @RequestBody Student student) {
 
         studentService.postStudent(student);
@@ -57,19 +57,20 @@ public class WebSocketController {
 
     }
 
-    @DeleteMapping("/{studentId}")
+    @MessageMapping("/delete")
     @SendTo("/topic/delete")
-    public long deleteStudent(@PathVariable long studentId) {
+    public long deleteStudent(long studentId) {
+        //System.out.println(studentId);
         studentService.deleteStudentById(studentId);
+       // return studentId;
         return studentId;
     }
 
-    @PutMapping("/save/marks/{studentId}")
+    @MessageMapping("/save/marks")
     @SendTo("/topic/update")
-    public Student saveMarks(@PathVariable long studentId, @RequestBody FormListMarks formListMarks) {
-
-        studentService.setMarksByIdStudentsAndSubject(studentId, formListMarks.getPredmet(), formListMarks.getList());
-        return getStudentById(studentId);
+    public Student saveMarks( @RequestBody FormListMarks formListMarks) {
+        studentService.setMarksByIdStudentsAndSubject(formListMarks.getStudentId(), formListMarks.getPredmet(), formListMarks.getList());
+        return getStudentById(formListMarks.getStudentId());
     }
 }
 

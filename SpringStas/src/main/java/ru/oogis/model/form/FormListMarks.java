@@ -15,7 +15,7 @@ public class FormListMarks {
 
     }
 
-
+    private long studentId;
     private SubjectEnum subjectEnum;
     @NotNull(message = "такого предмета нет")
     private String nameSubject;
@@ -63,6 +63,14 @@ public class FormListMarks {
 
     }
 
+    public long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(long studentId) {
+        this.studentId = studentId;
+    }
+
     public int getLengthArraysMarks() {
         return marks.length;
     }
@@ -70,8 +78,10 @@ public class FormListMarks {
     @Override
     public String toString() {
         return "FormListMarks{" +
-                "namePredmet='" + subjectEnum + '\'' +
-                ", vall=" + Arrays.toString(marks) +
+                "studentId=" + studentId +
+                ", subjectEnum=" + subjectEnum +
+                ", nameSubject='" + nameSubject + '\'' +
+                ", marks=" + Arrays.toString(marks) +
                 '}';
     }
 }
