@@ -9,6 +9,8 @@ import {Student} from '../../model/Student';
 import {SubjectBinder} from '../../model/SubjectBinder';
 import {Subject} from '../../model/Subject';
 import {StudentComponent} from '../../student/student.component';
+import {deprecate} from 'util';
+import {BodyAndIdClient} from '../body-and-id-client';
 
 
 @Injectable({providedIn: 'root'})
@@ -16,6 +18,7 @@ export class WebSocketService {
   private webSocketEndPoint = 'http://localhost:8180/ws';
   public stompStudent: Stomp.Client;
   public studentComponent: StudentComponent;
+  public idClient = 2;
 
   constructor() {
     let ws = new SockJS(this.webSocketEndPoint);
@@ -31,6 +34,13 @@ export class WebSocketService {
     this.stompStudent.connect({}, function(frame) {
       ts.webSocketSubscription();
       ts.studentComponentSubscription();
+
+
+      ts.stompStudent.subscribe('/user/' + ts.idClient + '/queue/messages', (event) => {
+        console.log(event);
+      });
+
+
       //this.stompClient.reconnect_delay = 2000;
     }, this.errorCallBack);
   }
@@ -94,7 +104,7 @@ export class WebSocketService {
   }
 
   postStudent(student: ValidStudent): void {
-    this.stompStudent.send('/app/postStudent', {}, JSON.stringify(this.converterValidStudent(student)));
+    this.stompStudent.send('/app/postStudent', {}, JSON.stringify(new BodyAndIdClient(this.converterValidStudent(student) , this.idClient)));
   }
 
   converterValidStudent(student: ValidStudent): PutStudent {
