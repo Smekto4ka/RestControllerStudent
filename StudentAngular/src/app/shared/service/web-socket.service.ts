@@ -18,7 +18,7 @@ export class WebSocketService {
   public studentComponent: StudentComponent;
 
   constructor() {
-    let ws = new SockJS(this.webSocketEndPoint);
+    const ws = new SockJS(this.webSocketEndPoint);
     this.stompStudent = Stomp.over(ws);
     this.connect();
   }
@@ -28,7 +28,7 @@ export class WebSocketService {
     console.log('Initialize WebSocket Connection');
 
     const ts = this;
-    this.stompStudent.connect({}, function(frame) {
+    this.stompStudent.connect({}, (frame) => {
       ts.webSocketSubscription();
       ts.studentComponentSubscription();
       //this.stompClient.reconnect_delay = 2000;
@@ -39,7 +39,7 @@ export class WebSocketService {
   webSocketSubscription(): void {
     const ts = this;
     ts.send('dop client');
-    this.stompStudent.subscribe('/topic/connect', function(sdkEvent: any) {
+    this.stompStudent.subscribe('/topic/connect', (sdkEvent: any) => {
       ts.onMessageReceived(sdkEvent);
     });
   }
@@ -47,13 +47,13 @@ export class WebSocketService {
 
   studentComponentSubscription(): void {
     const ts = this;
-    ts.stompStudent.subscribe('/topic/update', function(sdkEvent: any) {
-      if (ts.studentComponent !== undefined) {
+    ts.stompStudent.subscribe('/topic/update', (sdkEvent: any) => {
+      if (ts.studentComponent ) {
         ts.studentComponent.updateStudentBySubscription(sdkEvent);
       }
     });
-    ts.stompStudent.subscribe('/topic/delete', function(sdkEvent: any) {
-      if (ts.studentComponent !== undefined) {
+    ts.stompStudent.subscribe('/topic/delete', (sdkEvent: any) => {
+      if (ts.studentComponent ) {
         ts.studentComponent.deleteStudentBySubscription(sdkEvent);
       }
     });

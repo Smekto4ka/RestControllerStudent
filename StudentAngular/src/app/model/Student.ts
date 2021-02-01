@@ -9,6 +9,5 @@ export class Student {
     public subjectBinderMap: Map<number , SubjectBinder>,
     //TODO
     public subjectBinderAll: SubjectBinder[]
-  ) {
-  }
+  ) {}
 }

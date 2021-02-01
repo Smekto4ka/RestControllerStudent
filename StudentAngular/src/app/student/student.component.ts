@@ -7,6 +7,7 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FormListMarks} from '../model/FormListMarks';
 import {PageEvent} from '@angular/material/paginator';
 import {WebSocketService} from '../shared/service/web-socket.service';
+import {SubjectBinder} from '../model/SubjectBinder';
 
 @Component({
   selector: 'app-student',
@@ -38,7 +39,9 @@ export class StudentComponent implements OnInit {
 
 
   buttonClicker() {
-    console.log(this.webSocket.stompStudent);
+  /* for(const stud of this.studentObj){
+     console.log( stud.student.subjectBinderMap[1]);
+   }*/
 
   }
 
@@ -101,9 +104,13 @@ export class StudentComponent implements OnInit {
         }
       });
   }*/
+
   updateStudentBySubscription(jsonStudent: any): void {
     const student: Student = JSON.parse(jsonStudent.body);
-    console.log(student.subjectBinderMap);
+/*    for (const value of student.subjectBinderMap) {
+      console.log(value[1]);
+    }*/
+    //console.log(typeof student.subjectBinderMap);
     const indx = this.getIndex(student.studentId);
     if (indx >= 0) {
       const studentWrapper = this.studentObj[indx];
