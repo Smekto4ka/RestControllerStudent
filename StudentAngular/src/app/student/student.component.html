@@ -1,5 +1,5 @@
-<button (click)="buttonClicker()">click</button>
-<mat-accordion>
+
+<mat-accordion *ngIf="studentObj; else noStudent">
   <div class="filter">
     <input type="number" placeholder="minId" min="0" [(ngModel)]="minimumId">
     <input type="number" placeholder="maxId" min="0" [(ngModel)]="maximumId">
@@ -116,7 +116,9 @@
   </mat-expansion-panel>
 </mat-accordion>
 
-
+<ng-template #noStudent>
+  <button [disabled]="!webSocket.stompStudent.connected"   (click)="sendStudent()" >Получить студентов</button>
+</ng-template>
 
 
 

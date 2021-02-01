@@ -18,18 +18,17 @@ export class WebSocketService {
   private webSocketEndPoint = 'http://localhost:8180/ws';
   public stompStudent: Stomp.Client;
   public studentComponent: StudentComponent;
-  public idClient = Math.round(Math.random() * 1000);
+  public idClient: number;
 
   constructor() {
-    const ws = new SockJS(this.webSocketEndPoint);
-    this.stompStudent = Stomp.over(ws);
-    this.connect();
+
   }
 
 
   connect(): void {
     console.log('Initialize WebSocket Connection');
-
+    const ws = new SockJS(this.webSocketEndPoint);
+    this.stompStudent = Stomp.over(ws);
     const ts = this;
     this.stompStudent.connect({}, (frame) => {
       ts.webSocketSubscription();

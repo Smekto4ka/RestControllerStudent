@@ -16,7 +16,7 @@ import {SubjectBinder} from '../model/SubjectBinder';
 })
 export class StudentComponent implements OnInit {
 
-  studentObj: WrapperStudent[] = [];
+  studentObj: WrapperStudent[];
   nameSubject: string[] = [];
 
   minimumId = '';
@@ -28,21 +28,24 @@ export class StudentComponent implements OnInit {
 
   constructor(private studentService: StudentService, private webSocket: WebSocketService) {
     webSocket.studentComponent = this;
-
+    if (webSocket.stompStudent.connected) {
+      this.sendStudent();
+    }
   }
 
 
   ngOnInit(): void {
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
+  }
+
+  sendStudent() {
     this.webSocket.stompStudent.send('/app/all', {}, JSON.stringify(this.webSocket.idClient));
   }
 
+
   public initStudent(event: any): void {
-
-    const students: Student[] = JSON.parse(event);
-
+    const students: Student[] = JSON.parse(event.body);
     this.studentObj = students.sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new WrapperStudent(stud));
-
   }
 
   buttonClicker() {
@@ -51,6 +54,7 @@ export class StudentComponent implements OnInit {
      }*/
 
   }
+
 
   setSettingsPage(event: PageEvent): void {
     this.itemsPerPage = event.pageSize;

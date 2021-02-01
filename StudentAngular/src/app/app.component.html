@@ -2,10 +2,16 @@
   <h5 class="my-0 mr-md-auto font-weight-normal">OOO Прохрамист</h5>
   <h5 class="my-0 mr-md-auto font-weight-normal">Id = {{webSocket.idClient}} </h5>
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark"  routerLink="/listStudent">Student list</a>
+    <a class="p-2 text-dark" routerLink="/listStudent">Student list</a>
 
 
   </nav>
-  <a class="btn btn-outline-primary"  routerLink="/newStudent">new Student</a>
+  <a class="btn btn-outline-primary" routerLink="/newStudent">new Student</a>
 </div>
-<router-outlet></router-outlet>
+<div *ngIf="webSocket.idClient ; else noId">
+  <router-outlet></router-outlet>
+</div>
+<ng-template #noId>
+  <input type="number" min=0 [(ngModel)]="idClient">
+  <button (click)="setId()">войти</button>
+</ng-template>
