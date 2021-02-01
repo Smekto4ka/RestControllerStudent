@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 import ru.oogis.event.ErrorCreatEvent;
+import ru.oogis.event.StudentListEvent;
 import ru.oogis.event.StudentUpdateEvent;
 import ru.oogis.model.Student;
 import ru.oogis.model.form.FormAndIdClient;
@@ -15,6 +16,7 @@ import ru.oogis.model.form.FormListMarks;
 import ru.oogis.service.StudentService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 //@RequestMapping("/webSocket")
@@ -35,6 +37,13 @@ public class WebSocketController {
         return new Greeting("Hello, connect " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
 
+    @MessageMapping("/all")
+    public void getStudents(long idClient) {
+        System.out.println(idClient);
+        List<Student> students = studentService.getStudents();
+        StudentListEvent studentListEvent = new StudentListEvent(students, idClient);
+        applicationEventPublisher.publishEvent(studentListEvent);
+    }
 
     public Student getStudentById(@PathVariable long studentId) {
         return studentService.getStudById(studentId).get();
@@ -57,8 +66,8 @@ public class WebSocketController {
         System.out.println("-----" + form);
 /*        System.out.println(bindingResult);
         if (bindingResult.hasErrors()) {*/
-            ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(form.getBody(), form.getIdClient());
-            applicationEventPublisher.publishEvent(errorCreatEvent);
+        ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(form.getBody(), form.getIdClient());
+        applicationEventPublisher.publishEvent(errorCreatEvent);
       /*      return;
         }
         studentService.postStudent(student);

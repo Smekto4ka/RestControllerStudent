@@ -28,20 +28,27 @@ export class StudentComponent implements OnInit {
 
   constructor(private studentService: StudentService, private webSocket: WebSocketService) {
     webSocket.studentComponent = this;
+
   }
 
 
   ngOnInit(): void {
-    this.studentService.getStudent().subscribe(student => this.studentObj = student
-      .sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new WrapperStudent(stud)));
     this.studentService.getNameSubject().subscribe(name => this.nameSubject = name);
+    this.webSocket.stompStudent.send('/app/all', {}, JSON.stringify(this.webSocket.idClient));
   }
 
+  public initStudent(event: any): void {
+
+    const students: Student[] = JSON.parse(event);
+
+    this.studentObj = students.sort((st1, st2) => st1.studentId - st2.studentId).map(stud => new WrapperStudent(stud));
+
+  }
 
   buttonClicker() {
-  /* for(const stud of this.studentObj){
-     console.log( stud.student.subjectBinderMap[1]);
-   }*/
+    /* for(const stud of this.studentObj){
+       console.log( stud.student.subjectBinderMap[1]);
+     }*/
 
   }
 
@@ -107,9 +114,9 @@ export class StudentComponent implements OnInit {
 
   updateStudentBySubscription(jsonStudent: any): void {
     const student: Student = JSON.parse(jsonStudent.body);
-/*    for (const value of student.subjectBinderMap) {
-      console.log(value[1]);
-    }*/
+    /*    for (const value of student.subjectBinderMap) {
+          console.log(value[1]);
+        }*/
     //console.log(typeof student.subjectBinderMap);
     const indx = this.getIndex(student.studentId);
     if (indx >= 0) {

@@ -18,7 +18,7 @@ export class WebSocketService {
   private webSocketEndPoint = 'http://localhost:8180/ws';
   public stompStudent: Stomp.Client;
   public studentComponent: StudentComponent;
-  public idClient = 2;
+  public idClient = Math.round(Math.random() * 1000);
 
   constructor() {
     const ws = new SockJS(this.webSocketEndPoint);
@@ -58,15 +58,17 @@ export class WebSocketService {
   studentComponentSubscription(): void {
     const ts = this;
     ts.stompStudent.subscribe('/topic/update', (sdkEvent: any) => {
-      if (ts.studentComponent ) {
+      if (ts.studentComponent) {
         ts.studentComponent.updateStudentBySubscription(sdkEvent);
       }
     });
     ts.stompStudent.subscribe('/topic/delete', (sdkEvent: any) => {
-      if (ts.studentComponent ) {
+      if (ts.studentComponent) {
         ts.studentComponent.deleteStudentBySubscription(sdkEvent);
       }
     });
+    ts.stompStudent.subscribe('/user/' + ts.idClient + '/student/all',
+      (event) => ts.studentComponent.initStudent(event));
   }
 
 
@@ -104,7 +106,7 @@ export class WebSocketService {
   }
 
   postStudent(student: ValidStudent): void {
-    this.stompStudent.send('/app/postStudent', {}, JSON.stringify(new BodyAndIdClient(this.converterValidStudent(student) , this.idClient)));
+    this.stompStudent.send('/app/postStudent', {}, JSON.stringify(new BodyAndIdClient(this.converterValidStudent(student), this.idClient)));
   }
 
   converterValidStudent(student: ValidStudent): PutStudent {
