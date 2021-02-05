@@ -12,6 +12,6 @@
   <router-outlet></router-outlet>
 </div>
 <ng-template #noId>
-  <input type="number" min=0 [(ngModel)]="idClient">
+  <input type="number" min=1 [(ngModel)]="idClient">
   <button (click)="setId()">войти</button>
 </ng-template>

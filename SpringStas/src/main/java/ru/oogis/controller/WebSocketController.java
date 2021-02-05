@@ -63,17 +63,17 @@ public class WebSocketController {
     @MessageMapping("/postStudent")
     //  @SendTo("/topic/update")
     public void postStudent(@Valid @RequestBody FormAndIdClient<Student> form) {
-        System.out.println("-----" + form);
-/*        System.out.println(bindingResult);
-        if (bindingResult.hasErrors()) {*/
-        ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(form.getBody(), form.getIdClient());
-        applicationEventPublisher.publishEvent(errorCreatEvent);
-      /*      return;
-        }
-        studentService.postStudent(student);
 
-        StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(student);
-        applicationEventPublisher.publishEvent(studentCreatEvent);*/
+
+        studentService.postStudent(form.getBody());
+        //TODO если ок , то ок иначе текст ошибки
+        String info = "ok";
+        ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(info, form.getIdClient());
+        applicationEventPublisher.publishEvent(errorCreatEvent);
+
+
+        StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(form.getBody());
+        applicationEventPublisher.publishEvent(studentCreatEvent);
 
         //return student;
 

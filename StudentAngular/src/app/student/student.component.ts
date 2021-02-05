@@ -117,6 +117,9 @@ export class StudentComponent implements OnInit {
   }*/
 
   updateStudentBySubscription(jsonStudent: any): void {
+    if (!this.studentObj){
+      return;
+    }
     const student: Student = JSON.parse(jsonStudent.body);
     /*    for (const value of student.subjectBinderMap) {
           console.log(value[1]);

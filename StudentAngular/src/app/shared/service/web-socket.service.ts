@@ -11,6 +11,7 @@ import {Subject} from '../../model/Subject';
 import {StudentComponent} from '../../student/student.component';
 import {deprecate} from 'util';
 import {BodyAndIdClient} from '../body-and-id-client';
+import {PostStudentComponent} from '../../post-student/post-student.component';
 
 
 @Injectable({providedIn: 'root'})
@@ -19,6 +20,7 @@ export class WebSocketService {
   public stompStudent: Stomp.Client;
   public studentComponent: StudentComponent;
   public idClient: number;
+  public postStudentComponent: PostStudentComponent;
 
   constructor() {
 
@@ -36,7 +38,9 @@ export class WebSocketService {
 
 
       ts.stompStudent.subscribe('/user/' + ts.idClient + '/queue/messages', (event) => {
-        console.log(event);
+        if (ts.postStudentComponent) {
+          ts.postStudentComponent.newStudentEvent(event);
+        }
       });
 
 

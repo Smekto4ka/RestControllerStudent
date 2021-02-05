@@ -15,12 +15,19 @@ export class PostStudentComponent implements OnInit {
   public student: ValidStudent;
 
   constructor(private studentService: WebSocketService) {
-    if (!studentService.stompStudent.connected) {
-      studentService.connect();
-    }
+    studentService.postStudentComponent = this;
     this.student = new ValidStudent(0, '', '', 0);
   }
+//TODO  ===
+  newStudentEvent(event): void {
+    const otvet: string = event.body;
 
+    if (otvet === 'ok') {
+      console.log('ok');
+    } else {
+      console.log('no');
+    }
+  }
 
   ngOnInit(): void {
   }
