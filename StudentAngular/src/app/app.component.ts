@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(public webSocket: WebSocketService) {
   }
 
-  setId() {
+  setId(): void {
     this.webSocket.idClient = this.idClient;
     this.webSocket.connect();
   }
