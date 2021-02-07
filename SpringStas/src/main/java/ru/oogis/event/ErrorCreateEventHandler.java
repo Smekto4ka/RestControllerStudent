@@ -18,7 +18,7 @@ public class ErrorCreateEventHandler implements ApplicationListener<ErrorCreatEv
 
     @Override
     public void onApplicationEvent(ErrorCreatEvent event) {
-        log.info("Error " + event.getMessage());
-        webSocket.convertAndSendToUser(event.getIdClient().toString(),"/queue/messages" , event.getMessage());
+        log.info("Error " + event.getMessage() + "  ///  " + event.getPrincipal().getName() );
+        webSocket.convertAndSendToUser(event.getPrincipal().getName(),"/queue/post" , event.getMessage());
     }
 }

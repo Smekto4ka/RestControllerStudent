@@ -37,7 +37,7 @@ export class WebSocketService {
       ts.studentComponentSubscription();
 
 
-      ts.stompStudent.subscribe('/user/' + ts.idClient + '/queue/messages', (event) => {
+      ts.stompStudent.subscribe('/user/queue/post', (event) => {
         if (ts.postStudentComponent) {
           ts.postStudentComponent.newStudentEvent(event);
         }
@@ -70,7 +70,7 @@ export class WebSocketService {
         ts.studentComponent.deleteStudentBySubscription(sdkEvent);
       }
     });
-    ts.stompStudent.subscribe('/user/' + ts.idClient + '/student/all',
+    ts.stompStudent.subscribe('/user/queue/student/all',
       (event) => ts.studentComponent.initStudent(event));
   }
 

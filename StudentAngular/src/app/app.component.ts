@@ -8,7 +8,7 @@ import {WebSocketService} from './shared/service/web-socket.service';
 })
 export class AppComponent {
   title = 'StudentAngular';
-  idClient = 1;
+  idClient = 2;
 
   constructor(public webSocket: WebSocketService) {
   }

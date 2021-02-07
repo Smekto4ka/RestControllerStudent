@@ -21,7 +21,7 @@ public class StudentListEvent extends ApplicationEvent {
     }
 
 
-    public Long getIdClient() {
+    public Long getPrincipal() {
         return idClient;
     }
 

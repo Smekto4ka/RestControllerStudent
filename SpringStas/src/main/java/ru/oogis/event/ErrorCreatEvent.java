@@ -1,24 +1,25 @@
 package ru.oogis.event;
 
 import org.springframework.context.ApplicationEvent;
-import ru.oogis.model.Student;
+
+import java.security.Principal;
 
 public class ErrorCreatEvent extends ApplicationEvent {
     private Object message;
-    private long idClient;
+    private  Principal principal;
 
 
-    public ErrorCreatEvent(Object message , long idClient){
+    public ErrorCreatEvent(Object message , Principal principal){
         super(message);
         this.message = message;
-        this.idClient = idClient;
+        this.principal = principal;
     }
 
     public Object getMessage() {
         return message;
     }
 
-    public Long getIdClient() {
-        return idClient;
+    public Principal getPrincipal() {
+        return principal;
     }
 }

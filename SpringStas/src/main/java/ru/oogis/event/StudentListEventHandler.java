@@ -19,8 +19,8 @@ public class StudentListEventHandler implements ApplicationListener<StudentListE
 
     @Override
     public void onApplicationEvent(StudentListEvent studentListEvent) {
-        log.info("отсыл листа студентов клиенту : " + studentListEvent.getIdClient());
-        webSocket.convertAndSendToUser(studentListEvent.getIdClient().toString(), "/student/all", studentListEvent.getStudentList());
+        log.info("отсыл листа студентов клиенту : " + studentListEvent.getPrincipal());
+        webSocket.convertAndSendToUser(studentListEvent.getPrincipal().toString(), "/student/all", studentListEvent.getStudentList());
 
     }
 }

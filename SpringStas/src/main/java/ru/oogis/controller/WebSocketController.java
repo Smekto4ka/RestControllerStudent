@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.HtmlUtils;
-import ru.oogis.event.ErrorCreatEvent;
-import ru.oogis.event.StudentListEvent;
 import ru.oogis.event.StudentUpdateEvent;
 import ru.oogis.model.Student;
 import ru.oogis.model.form.FormAndIdClient;
@@ -16,9 +16,10 @@ import ru.oogis.model.form.FormListMarks;
 import ru.oogis.service.StudentService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
-@RestController
+@Controller
 //@RequestMapping("/webSocket")
 public class WebSocketController {
     private final StudentService studentService;
@@ -31,18 +32,30 @@ public class WebSocketController {
     }
 
 
+    /*
+    одноразовый метод, происходит при
+    subscribe("/app/topic/update , ....");
+     */
+/*    @SubscribeMapping("/topic/update")
+    public void subscribe(Principal principal) {
+        System.out.println(principal);
+
+    }*/
+
+
     @MessageMapping("/hello")
     @SendTo("/topic/connect")
     public Greeting greeting(HelloMessage message) throws Exception {
+
         return new Greeting("Hello, connect " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
 
     @MessageMapping("/all")
-    public void getStudents(long idClient) {
-        System.out.println(idClient);
+    @SendToUser("/queue/student/all")
+    public List<Student> getStudents(Principal principal, long idClient) {
         List<Student> students = studentService.getStudents();
-        StudentListEvent studentListEvent = new StudentListEvent(students, idClient);
-        applicationEventPublisher.publishEvent(studentListEvent);
+        return students;
+
     }
 
     public Student getStudentById(@PathVariable long studentId) {
@@ -50,34 +63,49 @@ public class WebSocketController {
     }
 
     @MessageMapping("/update")
-    //@SendTo("/topic/update")
-    public void updateStudent(@RequestBody Student student) {
+    @SendTo("/topic/update")
+    public Student updateStudent(@RequestBody Student student) {
         studentService.updateStudent(student);
 
-        StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(student);
-        applicationEventPublisher.publishEvent(studentCreatEvent);
-        //return student;
+       /* StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(student);
+        applicationEventPublisher.publishEvent(studentCreatEvent);*/
+        return student;
 
     }
 
     @MessageMapping("/postStudent")
-    //  @SendTo("/topic/update")
-    public void postStudent(@Valid @RequestBody FormAndIdClient<Student> form) {
+    @SendToUser("/queue/post")
+    public String postStudent(@Valid @RequestBody FormAndIdClient<Student> form) {
 
 
         studentService.postStudent(form.getBody());
         //TODO если ок , то ок иначе текст ошибки
         String info = "ok";
-        ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(info, form.getIdClient());
-        applicationEventPublisher.publishEvent(errorCreatEvent);
-
-
-        StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(form.getBody());
-        applicationEventPublisher.publishEvent(studentCreatEvent);
-
-        //return student;
+        if (info.equals("ok")) {
+            StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(form.getBody());
+            applicationEventPublisher.publishEvent(studentCreatEvent);
+        }
+        return info;
 
     }
+
+
+   /* @MessageMapping("/postStudent")
+    public void postStudent(Principal principal, @Valid @RequestBody FormAndIdClient<Student> form) {
+
+
+        studentService.postStudent(form.getBody());
+        //TODO если ок , то ок иначе текст ошибки
+        String info = "ok";
+        if (info.equals("ok")) {
+            StudentUpdateEvent studentCreatEvent = new StudentUpdateEvent(form.getBody());
+            applicationEventPublisher.publishEvent(studentCreatEvent);
+        }
+
+        ErrorCreatEvent errorCreatEvent = new ErrorCreatEvent(info, principal);
+        applicationEventPublisher.publishEvent(errorCreatEvent);
+    }*/
+
 
     @MessageMapping("/delete")
     @SendTo("/topic/delete")
