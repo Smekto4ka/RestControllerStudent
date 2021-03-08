@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**")//по данному пути
                 .authenticated()// пускать только аутентифицированных
-                //.antMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                .antMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
                 .and()
                 //.httpBasic() // базовая аутентификация, спринг выкенет окно регистрации, когда пойдешь по запретному пути
                 .formLogin()
@@ -44,17 +46,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessUrl("/hello"); // куда отправить после отмены регистрации*-*- // не работает у меня/ что прописать url?
     }
-// добавить в память дефолтных юзеров , не база
-    @Bean
-    public UserDetailsService user() {
-        UserDetails user = new User("admin" , "admin", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-        return new InMemoryUserDetailsManager(Arrays.asList(user));
-    }
 
-    @Bean // подключение сервиса , в котором идет работа с юзерами
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userService); // даем сервис
-        return daoAuthenticationProvider;
+    // добавить в память дефолтных юзеров , не база // не работает
+/*    @Bean
+    public UserDetailsService user() {
+        UserDetails user = new User("admin", "admin", Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        return new InMemoryUserDetailsManager(Arrays.asList(user));
+    }*/
+
+
+    @Override// подключение сервиса , в котором идет работа с юзерами
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
     }
 }

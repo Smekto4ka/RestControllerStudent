@@ -17,8 +17,14 @@ public class MyController {
     public String pageForAuthenticatedUsers(Principal principal) {
         return "secured page" + principal.getName();
     }
+
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "Hello";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "ADMINNNNN";
     }
 }

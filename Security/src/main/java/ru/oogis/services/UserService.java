@@ -21,9 +21,12 @@ public class UserService implements UserDetailsService {
     private Map<String, User> users = new HashMap<>();
 
     public UserService() {
-        User user = new User("sasa", "sasa");
+        User user = new User("admin", "admin");
         user.setRole(new Role("ROLE_ADMIN"));
         users.put(user.getUsername(), user);
+        User user2 = new User("sasa", "sasa");
+       // user2.setRole(new Role("ROLE_ADMIN"));
+        users.put(user2.getUsername(), user2);
         System.out.println(users);
     }
 
