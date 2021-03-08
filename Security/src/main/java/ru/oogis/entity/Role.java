@@ -22,4 +22,12 @@ public class Role {
         this.name = name;
     }
     private static long generatedId = 0;
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -1,12 +1,24 @@
 package ru.oogis.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.oogis.entity.User;
+import ru.oogis.services.UserService;
 
 import java.security.Principal;
 
 @RestController
 public class MyController {
+
+    private UserService userService;
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
+
 
     @GetMapping("/")
     public String homePage() {
@@ -26,5 +38,11 @@ public class MyController {
     @GetMapping("/admin")
     public String admin() {
         return "ADMINNNNN";
+    }
+
+    @GetMapping("/role")
+    public String role(Principal principal){
+        User user = userService.findByUsername(principal.getName());
+        return user.getRoles().toString();
     }
 }

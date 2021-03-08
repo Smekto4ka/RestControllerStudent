@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**")//по данному пути
                 .authenticated()// пускать только аутентифицированных
+                .antMatchers("/role").authenticated()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
                 .and()
                 //.httpBasic() // базовая аутентификация, спринг выкенет окно регистрации, когда пойдешь по запретному пути
@@ -44,7 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.loginProcessingUrl("/helloLog")//отправлять данные аутентификации на этот post url
                 //.defaultSuccessUrl("/") // перекинуть после успешного захода , иначе на URL куда шел изначально
                 .and()
-                .logout().logoutSuccessUrl("/hello"); // куда отправить после отмены регистрации*-*- // не работает у меня/ что прописать url?
+                .logout().logoutSuccessUrl("/hello") // куда отправить после отмены регистрации*-*- // не работает у меня/ что прописать url?
+                .and();
+                //.csrf().disable(); // убрать токены / считывание
     }
 
     // добавить в память дефолтных юзеров , не база // не работает
